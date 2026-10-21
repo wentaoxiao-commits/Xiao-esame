@@ -1,0 +1,153 @@
+/* Stile base comune a tutte le pagine */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  color: #222;
+}
+
+/* Menu in alto */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  background: #222;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Presentazione: foto e testo affiancati */
+#presentazione {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+}
+
+#foto {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Card delle passioni */
+#lista-passioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.card {
+  flex: 1 1 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+/* Barre delle competenze */
+.competenza {
+  margin-bottom: 12px;
+}
+
+.barra {
+  background: #ddd;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.barra-piena {
+  background: #2a6fdb;
+  height: 100%;
+  border-radius: 6px;
+}
+
+/* Messaggio di errore */
+#messaggio-errore {
+  background: #ffd9d9;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+/* Footer */
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #eee;
+}
+
+footer img {
+  height: 50px;
+}
+
+/* Pagina CV */
+.voce {
+  border-left: 4px solid #2a6fdb;
+  padding-left: 12px;
+  margin-bottom: 16px;
+}
+
+.voce h3 {
+  margin: 0;
+}
+
+.sottotitolo {
+  margin: 0;
+  font-weight: bold;
+}
+
+.periodo {
+  margin: 0 0 4px 0;
+  color: #666;
+  font-size: 0.9em;
+}
+
+
+.imglogo {
+  width: 180px;   /* increase this value as needed */
+  height: auto;
+}
+
+/* Pagina Stage */
+.stage {
+  margin-bottom: 40px;
+}
+
+.stage .card {
+  max-width: 500px;
+  margin-bottom: 16px;
+}
+
+.stage .card ul {
+  margin: 4px 0 0 0;
+  padding-left: 20px;
+}
+
+/* Mantiene gli a capo e i paragrafi scritti nella cella */
+.relazione {
+  white-space: pre-line;
+}
