@@ -61,6 +61,17 @@ main {
   padding: 16px;
 }
 
+/* Immagine di sfondo semitrasparente, solo nella Home */
+body:has(#presentazione)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("img/sfondo.jpg") center / cover no-repeat;
+  opacity: 0.2;          /* più basso = più trasparente */
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* Presentazione: foto e testo affiancati */
 #presentazione {
   display: flex;
