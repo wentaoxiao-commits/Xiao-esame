@@ -1,3 +1,15 @@
+/* Palette: orange, dark grey, black */
+:root {
+  --arancio: #ff7a00;
+  --arancio-chiaro: #ffa040;
+  --grigio-scuro: #2b2b2b;
+  --grigio-medio: #3a3a3a;
+  --grigio-bordo: #4d4d4d;
+  --nero: #0d0d0d;
+  --testo: #f2f2f2;
+  --testo-tenue: #b5b5b5;
+}
+
 /* Stile base comune a tutte le pagine */
 * {
   box-sizing: border-box;
@@ -7,7 +19,16 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   line-height: 1.5;
-  color: #222;
+  color: var(--testo);
+  background: var(--grigio-scuro);
+  /* Il footer resta in fondo alla finestra anche con poco contenuto */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1, h2 {
+  color: var(--arancio);
 }
 
 /* Menu in alto */
@@ -16,15 +37,25 @@ nav {
   flex-wrap: wrap;
   gap: 16px;
   padding: 16px;
-  background: #222;
+  background: var(--nero);
+  border-bottom: 3px solid var(--arancio);
 }
 
 nav a {
   color: white;
   text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+nav a:hover {
+  color: var(--arancio);
+  border-bottom-color: var(--arancio);
 }
 
 main {
+  flex: 1;
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 16px;
@@ -43,6 +74,7 @@ main {
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
+  border: 4px solid var(--arancio);
 }
 
 /* Card delle passioni */
@@ -54,9 +86,15 @@ main {
 
 .card {
   flex: 1 1 250px;
-  border: 1px solid #ccc;
+  background: var(--grigio-medio);
+  border: 1px solid var(--grigio-bordo);
+  border-top: 4px solid var(--arancio);
   border-radius: 8px;
   padding: 12px;
+}
+
+.card h3 {
+  color: var(--arancio-chiaro);
 }
 
 .card img {
@@ -71,20 +109,22 @@ main {
 }
 
 .barra {
-  background: #ddd;
+  background: var(--nero);
   height: 12px;
   border-radius: 6px;
 }
 
 .barra-piena {
-  background: #2a6fdb;
+  background: var(--arancio);
   height: 100%;
   border-radius: 6px;
 }
 
 /* Messaggio di errore */
 #messaggio-errore {
-  background: #ffd9d9;
+  background: var(--arancio);
+  color: var(--nero);
+  font-weight: bold;
   padding: 12px;
   border-radius: 6px;
 }
@@ -97,7 +137,13 @@ footer {
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: #eee;
+  background: var(--nero);
+  color: var(--testo-tenue);
+  border-top: 3px solid var(--arancio);
+}
+
+footer p {
+  margin: 4px 0;
 }
 
 footer img {
@@ -106,13 +152,14 @@ footer img {
 
 /* Pagina CV */
 .voce {
-  border-left: 4px solid #2a6fdb;
+  border-left: 4px solid var(--arancio);
   padding-left: 12px;
   margin-bottom: 16px;
 }
 
 .voce h3 {
   margin: 0;
+  color: var(--arancio-chiaro);
 }
 
 .sottotitolo {
@@ -122,13 +169,12 @@ footer img {
 
 .periodo {
   margin: 0 0 4px 0;
-  color: #666;
+  color: var(--testo-tenue);
   font-size: 0.9em;
 }
 
-
 .imglogo {
-  width: 180px;   /* increase this value as needed */
+  width: 180px;
   height: auto;
 }
 
@@ -140,6 +186,17 @@ footer img {
 .stage .card {
   max-width: 500px;
   margin-bottom: 16px;
+}
+
+/* Immagine dello stage: si vede tutta, senza tagli */
+.stage .card img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  background: var(--nero);
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
 
 .stage .card ul {
