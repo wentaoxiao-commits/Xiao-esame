@@ -1,4 +1,5 @@
 // Link CSV dei fogli (pubblicati sul web)
+const URL_EXTRA = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJxyF8o1r1sfCJ_09WYwLJ-wOueTSdbtSPvcBwSEIM48gcy7Qo-xQe_Qi2uDX-YLlbb49hzgxR1n7L/pub?gid=1395264512&single=true&output=csv";
 const URL_STAGE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJxyF8o1r1sfCJ_09WYwLJ-wOueTSdbtSPvcBwSEIM48gcy7Qo-xQe_Qi2uDX-YLlbb49hzgxR1n7L/pub?gid=401235781&single=true&output=csv";
 const URL_HOME = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJxyF8o1r1sfCJ_09WYwLJ-wOueTSdbtSPvcBwSEIM48gcy7Qo-xQe_Qi2uDX-YLlbb49hzgxR1n7L/pub?gid=0&single=true&output=csv";
 const URL_CV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJxyF8o1r1sfCJ_09WYwLJ-wOueTSdbtSPvcBwSEIM48gcy7Qo-xQe_Qi2uDX-YLlbb49hzgxR1n7L/pub?gid=124213044&single=true&output=csv";
@@ -227,6 +228,64 @@ function mostraStage(righe) {
   });
 }
 
+// ---------- RENDERING DELLA PAGINA EXTRA ----------
+
+// Scrive un testo in un elemento già presente nella pagina e lo mostra, solo se il testo non è vuoto
+function mostraTestoSeEsiste(id, testo) {
+  if (testo === "") return;               // cella vuota: non mostro nulla
+  const elemento = document.getElementById(id);
+  elemento.textContent = testo;
+  elemento.hidden = false;
+}
+
+// Il link è valido solo se inizia con http:// o https://
+function linkValido(link) {
+  const minuscolo = link.toLowerCase();
+  return minuscolo.startsWith("https://") || minuscolo.startsWith("http://");
+}
+
+function mostraExtra(dati) {
+  // Riga "pagina": titolo grande e introduzione
+  const pagina = dati.find(r => r.sezione === "pagina");
+  if (pagina) {
+    mostraTestoSeEsiste("titolo-pagina", pagina.titolo);
+    mostraTestoSeEsiste("intro-pagina", pagina.descrizione);
+  }
+
+  // Righe "scheda": una card per ogni riga
+  const contenitore = document.getElementById("lista-extra");
+  dati.filter(r => r.sezione === "scheda").forEach(s => {
+    const card = document.createElement("div");
+    card.className = "card scheda";
+
+    // Immagine: solo se la cella non è vuota
+    if (s.immagine !== "") {
+      const img = document.createElement("img");
+      img.src = "img/" + s.immagine;
+      img.alt = s.titolo;
+      card.appendChild(img);
+    }
+
+    // Categoria (etichetta), titolo e descrizione: solo se non vuoti
+    aggiungiTesto(card, "span", s.categoria, "etichetta");
+    aggiungiTesto(card, "h3", s.titolo);
+    aggiungiTesto(card, "p", s.descrizione);
+
+    // Pulsante "Apri": solo se il link è valido, si apre in una nuova scheda
+    if (linkValido(s.link)) {
+      const pulsante = document.createElement("a");
+      pulsante.href = s.link;
+      pulsante.textContent = "Apri";
+      pulsante.className = "pulsante";
+      pulsante.target = "_blank";
+      pulsante.rel = "noopener noreferrer";
+      card.appendChild(pulsante);
+    }
+
+    contenitore.appendChild(card);
+  });
+}
+
 // ---------- AVVIO ----------
 
 async function avvia() {
@@ -238,6 +297,9 @@ async function avvia() {
       mostraCV(await leggiFoglio(URL_CV));
     } else if (document.getElementById("lista-stage")) {
       mostraStage(await leggiFoglio(URL_STAGE));
+    }
+      else if (document.getElementById("lista-extra")) {
+      mostraExtra(await leggiFoglio(URL_EXTRA));
     }
   } catch (errore) {
     mostraErrore("Non riesco a caricare i contenuti. Controlla che il foglio sia pubblicato.");
