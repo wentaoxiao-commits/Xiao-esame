@@ -66,6 +66,8 @@ body:has(#presentazione)::before {
   content: "";
   position: fixed;
   inset: 0;
+  /* cover = l'immagine riempie tutta l'area grigia, senza deformarsi e senza spazi vuoti
+     (se vuoi vederla intera, anche con bordi vuoti, usa "contain") */
   background: url("img/sfondo.jpg") center / cover no-repeat;
   opacity: 0.2;          /* più basso = più trasparente */
   z-index: -1;
