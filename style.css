@@ -1,13 +1,16 @@
-/* Palette: orange, dark grey, black */
+/* Palette: bianco, blu scuro, oro (solo per i pulsanti del menu) */
 :root {
-  --arancio: #ff7a00;
-  --arancio-chiaro: #ffa040;
-  --grigio-scuro: #2b2b2b;
-  --grigio-medio: #3a3a3a;
-  --grigio-bordo: #4d4d4d;
-  --nero: #0d0d0d;
-  --testo: #f2f2f2;
-  --testo-tenue: #b5b5b5;
+  --blu: #0b1f4b;
+  --blu-chiaro: #1d3a7a;
+  --bianco: #ffffff;
+  --azzurro: #eef2fa;
+  --azzurro-hover: #dfe8fb;
+  --bordo: #c5cfe6;
+  --testo: #14213d;
+  --testo-tenue: #5a6a8a;
+  --testo-footer: #c9d6f2;
+  --oro: #d4a017;
+  --oro-chiaro: #e8b923;
 }
 
 /* Stile base comune a tutte le pagine */
@@ -20,7 +23,7 @@ body {
   font-family: Arial, sans-serif;
   line-height: 1.5;
   color: var(--testo);
-  background: var(--grigio-scuro);
+  background: var(--bianco);
   /* Il footer resta in fondo alla finestra anche con poco contenuto */
   display: flex;
   flex-direction: column;
@@ -28,7 +31,7 @@ body {
 }
 
 h1, h2 {
-  color: var(--arancio);
+  color: var(--blu);
 }
 
 /* Menu in alto */
@@ -37,20 +40,24 @@ nav {
   flex-wrap: wrap;
   gap: 16px;
   padding: 16px;
-  background: var(--nero);
-  border-bottom: 3px solid var(--arancio);
+  background: var(--blu);
+  border-bottom: 3px solid var(--oro);
 }
 
+/* Link del menu: pulsanti oro */
 nav a {
-  color: white;
+  background: var(--oro);
+  color: var(--blu);
+  font-weight: bold;
   text-decoration: none;
-  padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
+  padding: 8px 18px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 nav a:hover {
-  color: var(--arancio);
-  border-bottom-color: var(--arancio);
+  background: var(--oro-chiaro);
+  transform: scale(1.05);
 }
 
 main {
@@ -66,7 +73,7 @@ body:has(#presentazione)::before {
   content: "";
   position: fixed;
   inset: 0;
-  /* cover = l'immagine riempie tutta l'area grigia, senza deformarsi e senza spazi vuoti
+  /* cover = l'immagine riempie tutta l'area, senza deformarsi e senza spazi vuoti
      (se vuoi vederla intera, anche con bordi vuoti, usa "contain") */
   background: url("img/sfondo.jpg") center / cover no-repeat;
   opacity: 0.2;          /* più basso = più trasparente */
@@ -87,7 +94,7 @@ body:has(#presentazione)::before {
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid var(--arancio);
+  border: 4px solid var(--blu);
 }
 
 /* Card delle passioni */
@@ -99,15 +106,15 @@ body:has(#presentazione)::before {
 
 .card {
   flex: 1 1 250px;
-  background: var(--grigio-medio);
-  border: 1px solid var(--grigio-bordo);
-  border-top: 4px solid var(--arancio);
+  background: var(--azzurro);
+  border: 1px solid var(--bordo);
+  border-top: 4px solid var(--blu);
   border-radius: 8px;
   padding: 12px;
 }
 
 .card h3 {
-  color: var(--arancio-chiaro);
+  color: var(--blu);
 }
 
 .card img {
@@ -122,21 +129,21 @@ body:has(#presentazione)::before {
 }
 
 .barra {
-  background: var(--nero);
+  background: var(--bordo);
   height: 12px;
   border-radius: 6px;
 }
 
 .barra-piena {
-  background: var(--arancio);
+  background: var(--blu);
   height: 100%;
   border-radius: 6px;
 }
 
 /* Messaggio di errore */
 #messaggio-errore {
-  background: var(--arancio);
-  color: var(--nero);
+  background: var(--blu);
+  color: var(--bianco);
   font-weight: bold;
   padding: 12px;
   border-radius: 6px;
@@ -150,9 +157,9 @@ footer {
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: var(--nero);
-  color: var(--testo-tenue);
-  border-top: 3px solid var(--arancio);
+  background: var(--blu);
+  color: var(--testo-footer);
+  border-top: 3px solid var(--oro);
 }
 
 footer p {
@@ -165,14 +172,14 @@ footer img {
 
 /* Pagina CV */
 .voce {
-  border-left: 4px solid var(--arancio);
+  border-left: 4px solid var(--blu);
   padding-left: 12px;
   margin-bottom: 16px;
 }
 
 .voce h3 {
   margin: 0;
-  color: var(--arancio-chiaro);
+  color: var(--blu);
 }
 
 .sottotitolo {
@@ -207,7 +214,7 @@ footer img {
   height: auto;
   max-height: 300px;
   object-fit: contain;
-  background: var(--nero);
+  background: var(--bianco);
   border-radius: 6px;
   margin-bottom: 8px;
 }
@@ -247,8 +254,8 @@ footer img {
 /* Piccola etichetta con la categoria */
 .etichetta {
   align-self: flex-start;
-  background: var(--arancio);
-  color: var(--nero);
+  background: var(--blu);
+  color: var(--bianco);
   font-size: 0.75em;
   font-weight: bold;
   padding: 2px 10px;
@@ -259,8 +266,8 @@ footer img {
 .pulsante {
   align-self: flex-start;
   margin-top: auto;
-  background: var(--arancio);
-  color: var(--nero);
+  background: var(--blu);
+  color: var(--bianco);
   font-weight: bold;
   text-decoration: none;
   padding: 8px 16px;
@@ -268,5 +275,49 @@ footer img {
 }
 
 .pulsante:hover {
-  background: var(--arancio-chiaro);
+  background: var(--blu-chiaro);
+}
+
+/* Effetto al passaggio del mouse: card più grandi e colorate */
+.card {
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.04);            /* un po' più grande */
+  background: var(--azzurro-hover);  /* azzurro un po' più intenso */
+  border-color: var(--blu);
+  position: relative;                /* la card ingrandita sta sopra le vicine */
+  z-index: 1;
+}
+
+.card:hover h3 {
+  color: var(--blu-chiaro);
+}
+
+/* Pulsante "Guardare di più" / "Mostra meno" */
+.guarda {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--blu);
+  color: var(--bianco);
+  font: inherit;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.guarda:hover {
+  background: var(--blu-chiaro);
+}
+
+/* Dettagli nascosti finché non si clicca il pulsante */
+.dettagli {
+  display: none;
+}
+
+.aperta .dettagli {
+  display: block;
 }

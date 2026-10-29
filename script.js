@@ -60,6 +60,25 @@ function mostraErrore(messaggio) {
   box.hidden = false;
 }
 
+// Aggiunge alla card un pulsante che mostra o nasconde i dettagli
+function rendiCliccabile(card, dettagli) {
+  dettagli.className = "dettagli";
+
+  // Pulsante "Guardare di più"
+  const bottone = document.createElement("button");
+  bottone.type = "button";
+  bottone.className = "guarda";
+  bottone.textContent = "Guardare di più";
+
+  card.append(bottone, dettagli);
+
+  // Solo il click sul pulsante apre o chiude i dettagli
+  bottone.addEventListener("click", () => {
+    const aperta = card.classList.toggle("aperta");
+    bottone.textContent = aperta ? "Mostra meno" : "Guardare di più";
+  });
+}
+
 // ---------- RENDERING DELLA HOME ----------
 
 function mostraHome(dati) {
@@ -85,10 +104,15 @@ function mostraHome(dati) {
     const titolo = document.createElement("h3");
     titolo.textContent = p.titolo;
 
-    const descrizione = document.createElement("p");
+        const descrizione = document.createElement("p");
     descrizione.textContent = p.testo;
 
-    card.append(img, titolo, descrizione);
+    // La descrizione va nei dettagli, nascosti finché non si clicca
+    const dettagli = document.createElement("div");
+    dettagli.appendChild(descrizione);
+
+    card.append(img, titolo);
+    rendiCliccabile(card, dettagli);
     contenitorePassioni.appendChild(card);
   });
 
@@ -198,13 +222,14 @@ function mostraStage(righe) {
     // Nome dell'azienda come titolo
     aggiungiTesto(card, "h3", r.azienda);
 
-    // Luogo e settore
-    aggiungiRiga(card, "Luogo", r.luogo);
-    aggiungiRiga(card, "Settore", r.settore);
+        // Luogo, settore e attività: nascosti finché non si clicca
+    const dettagli = document.createElement("div");
+    aggiungiRiga(dettagli, "Luogo", r.luogo);
+    aggiungiRiga(dettagli, "Settore", r.settore);
 
     // Elenco puntato: divido le attività dove c'è il punto e virgola
     if (r.attivita !== "") {
-      aggiungiTesto(card, "h4", "Di cosa si occupa");
+      aggiungiTesto(dettagli, "h4", "Di cosa si occupa");
       const elenco = document.createElement("ul");
       r.attivita.split(";").forEach(voce => {
         const testo = voce.trim();        // tolgo gli spazi in più
@@ -213,10 +238,17 @@ function mostraStage(righe) {
         li.textContent = testo;
         elenco.appendChild(li);
       });
-      card.appendChild(elenco);
+      dettagli.appendChild(elenco);
     }
 
-    blocco.appendChild(card);
+        // Se non c'è nessun dettaglio, la card resta normale
+    if (dettagli.children.length > 0) {
+      rendiCliccabile(card, dettagli);
+    }
+
+    blocco.appendChild(card);       // <-- questa riga va rimessa
+
+    // --- Relazione sotto la card ---
 
     // --- Relazione sotto la card ---
     if (r.relazione !== "") {
@@ -267,9 +299,16 @@ function mostraExtra(dati) {
     }
 
     // Categoria (etichetta), titolo e descrizione: solo se non vuoti
+    // Categoria (etichetta) e titolo: sempre visibili
     aggiungiTesto(card, "span", s.categoria, "etichetta");
     aggiungiTesto(card, "h3", s.titolo);
-    aggiungiTesto(card, "p", s.descrizione);
+
+    // Descrizione: nascosta finché non si clicca (solo se c'è)
+    if (s.descrizione !== "") {
+      const dettagli = document.createElement("div");
+      aggiungiTesto(dettagli, "p", s.descrizione);
+      rendiCliccabile(card, dettagli);
+    }
 
     // Pulsante "Apri": solo se il link è valido, si apre in una nuova scheda
     if (linkValido(s.link)) {
