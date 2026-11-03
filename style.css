@@ -1,16 +1,15 @@
-/* Palette: bianco, blu scuro, oro (solo per i pulsanti del menu) */
+/* Palette: oro, nero, argento */
 :root {
-  --blu: #0b1f4b;
-  --blu-chiaro: #1d3a7a;
-  --bianco: #ffffff;
-  --azzurro: #eef2fa;
-  --azzurro-hover: #dfe8fb;
-  --bordo: #c5cfe6;
-  --testo: #14213d;
-  --testo-tenue: #5a6a8a;
-  --testo-footer: #c9d6f2;
-  --oro: #d4a017;
-  --oro-chiaro: #e8b923;
+  --oro: #d4af37;
+  --oro-chiaro: #f0cf5a;
+  --nero: #0a0a0a;
+  --nero-card: #1a1a1a;
+  --nero-card-hover: #2a2a2a;
+  --argento: #c0c0c0;
+  --argento-chiaro: #e6e6e6;
+  --bordo: #3d3d3d;
+  --testo: #e6e6e6;
+  --testo-tenue: #9a9a9a;
 }
 
 /* Stile base comune a tutte le pagine */
@@ -23,7 +22,7 @@ body {
   font-family: Arial, sans-serif;
   line-height: 1.5;
   color: var(--testo);
-  background: var(--bianco);
+  background: var(--nero);
   /* Il footer resta in fondo alla finestra anche con poco contenuto */
   display: flex;
   flex-direction: column;
@@ -31,7 +30,7 @@ body {
 }
 
 h1, h2 {
-  color: var(--blu);
+  color: var(--oro);
 }
 
 /* Menu in alto */
@@ -40,14 +39,14 @@ nav {
   flex-wrap: wrap;
   gap: 16px;
   padding: 16px;
-  background: var(--blu);
+  background: var(--nero);
   border-bottom: 3px solid var(--oro);
 }
 
 /* Link del menu: pulsanti oro */
 nav a {
   background: var(--oro);
-  color: var(--blu);
+  color: var(--nero);
   font-weight: bold;
   text-decoration: none;
   padding: 8px 18px;
@@ -94,7 +93,7 @@ body:has(#presentazione)::before {
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid var(--blu);
+  border: 4px solid var(--oro);
 }
 
 /* Card delle passioni */
@@ -106,15 +105,15 @@ body:has(#presentazione)::before {
 
 .card {
   flex: 1 1 250px;
-  background: var(--azzurro);
+  background: var(--nero-card);
   border: 1px solid var(--bordo);
-  border-top: 4px solid var(--blu);
+  border-top: 4px solid var(--oro);
   border-radius: 8px;
   padding: 12px;
 }
 
 .card h3 {
-  color: var(--blu);
+  color: var(--argento-chiaro);
 }
 
 .card img {
@@ -135,15 +134,15 @@ body:has(#presentazione)::before {
 }
 
 .barra-piena {
-  background: var(--blu);
+  background: var(--oro);
   height: 100%;
   border-radius: 6px;
 }
 
 /* Messaggio di errore */
 #messaggio-errore {
-  background: var(--blu);
-  color: var(--bianco);
+  background: var(--oro);
+  color: var(--nero);
   font-weight: bold;
   padding: 12px;
   border-radius: 6px;
@@ -157,8 +156,8 @@ footer {
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: var(--blu);
-  color: var(--testo-footer);
+  background: var(--nero);
+  color: var(--argento);
   border-top: 3px solid var(--oro);
 }
 
@@ -166,25 +165,24 @@ footer p {
   margin: 4px 0;
 }
 
-footer img {
-  height: 50px;
-}
+
 
 /* Pagina CV */
 .voce {
-  border-left: 4px solid var(--blu);
+  border-left: 4px solid var(--oro);
   padding-left: 12px;
   margin-bottom: 16px;
 }
 
 .voce h3 {
   margin: 0;
-  color: var(--blu);
+  color: var(--argento-chiaro);
 }
 
 .sottotitolo {
   margin: 0;
   font-weight: bold;
+  color: var(--argento);
 }
 
 .periodo {
@@ -193,9 +191,14 @@ footer img {
   font-size: 0.9em;
 }
 
+/* Logo nel footer: mantiene le proporzioni e sta bene sul nero */
 .imglogo {
-  width: 180px;
+  width: 160px;
+  max-width: 100%;
   height: auto;
+  background-color: white;   /* riquadro chiaro dietro al logo */
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
 /* Pagina Stage */
@@ -214,7 +217,7 @@ footer img {
   height: auto;
   max-height: 300px;
   object-fit: contain;
-  background: var(--bianco);
+  background: var(--nero);
   border-radius: 6px;
   margin-bottom: 8px;
 }
@@ -231,7 +234,7 @@ footer img {
 
 /* Pagina Extra */
 #intro-pagina {
-  color: var(--testo-tenue);
+  color: var(--argento);
   margin-bottom: 24px;
 }
 
@@ -254,8 +257,8 @@ footer img {
 /* Piccola etichetta con la categoria */
 .etichetta {
   align-self: flex-start;
-  background: var(--blu);
-  color: var(--bianco);
+  background: var(--argento);
+  color: var(--nero);
   font-size: 0.75em;
   font-weight: bold;
   padding: 2px 10px;
@@ -266,8 +269,8 @@ footer img {
 .pulsante {
   align-self: flex-start;
   margin-top: auto;
-  background: var(--blu);
-  color: var(--bianco);
+  background: var(--argento);
+  color: var(--nero);
   font-weight: bold;
   text-decoration: none;
   padding: 8px 16px;
@@ -275,7 +278,7 @@ footer img {
 }
 
 .pulsante:hover {
-  background: var(--blu-chiaro);
+  background: var(--oro);
 }
 
 /* Effetto al passaggio del mouse: card più grandi e colorate */
@@ -284,23 +287,23 @@ footer img {
 }
 
 .card:hover {
-  transform: scale(1.04);            /* un po' più grande */
-  background: var(--azzurro-hover);  /* azzurro un po' più intenso */
-  border-color: var(--blu);
-  position: relative;                /* la card ingrandita sta sopra le vicine */
+  transform: scale(1.04);               /* un po' più grande */
+  background: var(--nero-card-hover);   /* grigio un po' più chiaro */
+  border-color: var(--oro);
+  position: relative;                   /* la card ingrandita sta sopra le vicine */
   z-index: 1;
 }
 
 .card:hover h3 {
-  color: var(--blu-chiaro);
+  color: var(--oro);                    /* il titolo diventa oro */
 }
 
 /* Pulsante "Guardare di più" / "Mostra meno" */
 .guarda {
   display: inline-block;
   margin-top: 8px;
-  background: var(--blu);
-  color: var(--bianco);
+  background: var(--argento);
+  color: var(--nero);
   font: inherit;
   font-weight: bold;
   border: none;
@@ -310,7 +313,7 @@ footer img {
 }
 
 .guarda:hover {
-  background: var(--blu-chiaro);
+  background: var(--oro);
 }
 
 /* Dettagli nascosti finché non si clicca il pulsante */
@@ -320,4 +323,14 @@ footer img {
 
 .aperta .dettagli {
   display: block;
+}
+
+/* Logo cliccabile */
+footer a {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+footer a:hover {
+  transform: scale(1.05);
 }
