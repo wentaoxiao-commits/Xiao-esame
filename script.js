@@ -130,7 +130,7 @@ function mostraHome(dati) {
 
     const piena = document.createElement("div");
     piena.className = "barra-piena";
-    piena.style.width = c.livello + "%";   // la lunghezza dipende dal livello
+    piena.style.height = c.livello + "%";   // l'altezza dipende dal livello
 
     barra.appendChild(piena);
     blocco.append(nome, barra);
