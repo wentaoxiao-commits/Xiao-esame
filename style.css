@@ -80,18 +80,18 @@ body:has(#presentazione)::before {
   pointer-events: none;
 }
 
-/* ---------- HOME: tre colonne sulla stessa riga ----------
-   Passioni (sinistra) | presentazione (centro) | Cosa so fare (destra) */
+/* ---------- HOME: due colonne ----------
+   A sinistra: Passioni (card 2 sopra + 1 larga sotto) e Cosa so fare (barre)
+   A destra: presentazione (foto rotonda sopra, testo sotto) */
 body:has(#presentazione) main {
-  max-width: none;
-  margin: 0;
+  max-width: 1100px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px) minmax(0, 1fr);
-  gap: 0 32px;
-  align-items: start;          /* tutte e tre partono alla stessa altezza */
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 0 48px;
+  align-items: start;
 }
 
-/* Il contenitore non conta: le sue due sezioni diventano colonne della griglia */
+/* Il contenitore non conta: le sue due sezioni diventano elementi della griglia */
 #colonne {
   display: contents;
 }
@@ -104,17 +104,17 @@ body:has(#presentazione) main {
 #colonne > section:nth-child(1) {   /* Passioni */
   grid-column: 1;
   grid-row: 2;
-  justify-self: end;               /* si avvicina alla presentazione */
-}
-
-#presentazione {
-  grid-column: 2;
-  grid-row: 2;
 }
 
 #colonne > section:nth-child(2) {   /* Cosa so fare */
-  grid-column: 3;
-  grid-row: 2;
+  grid-column: 1;
+  grid-row: 3;
+}
+
+#presentazione {                    /* a destra, alta quanto le due sezioni */
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  margin-top: 80px;                 /* la sposta più in basso */
 }
 
 /* Sotto i 900px di larghezza tutto va in una colonna: presentazione, Passioni, Cosa so fare */
@@ -132,7 +132,7 @@ body:has(#presentazione) main {
   }
 }
 
-/* Presentazione: foto sopra, testo sotto, tutto centrato */
+/* Presentazione: foto rotonda sopra, testo sotto, tutto centrato */
 #presentazione {
   display: flex;
   flex-direction: column;
@@ -146,19 +146,22 @@ body:has(#presentazione) main {
 }
 
 #foto {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid var(--oro);
 }
 
-/* Card delle passioni: 2 per riga, strette */
+/* Card delle passioni: 2 per riga; l'ultima, se è dispari, occupa tutta la riga */
 #lista-passioni {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 220px));
-  justify-content: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+#lista-passioni .card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 /* Sul telefono le card vanno una sotto l'altra */
@@ -187,48 +190,25 @@ body:has(#presentazione) main {
   object-fit: cover;
 }
 
-/* Barre delle competenze */
-/* Cosa so fare: barre verticali, una accanto all'altra */
-#lista-competenze {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 16px;
-}
-
+/* Barre delle competenze: nome a sinistra, barra orizzontale accanto */
 .competenza {
   display: flex;
-  flex-direction: column-reverse;   /* la barra sta sopra, il nome sotto */
   align-items: center;
-  gap: 8px;
-  width: 64px;
-  margin-bottom: 0;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .competenza p {
   margin: 0;
-  font-size: 0.85em;
-  text-align: center;
+  flex: 0 0 140px;          /* spazio fisso per il nome, così le barre partono dallo stesso punto */
 }
 
 .barra {
-  display: flex;
-  align-items: flex-end;
-  width: 24px;
-  height: 260px;          /* prima era 150px: più alto = barra più lunga */
-  border-radius: 12px;
-}
-
-.barra-piena {
-  width: 100%;                      /* l'altezza la decide il livello (JavaScript) */
-  border-radius: 12px;
-}
-
-/* .barra {
+  flex: 1;                  /* la barra occupa lo spazio che resta */
   background: var(--bordo);
   height: 12px;
   border-radius: 6px;
-} */
+}
 
 .barra-piena {
   background: var(--oro);
