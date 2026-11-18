@@ -54,8 +54,8 @@ function csvInOggetti(testo) {
 }
 
 // Mostra un messaggio d'errore al posto della pagina vuota
-function mostraErrore(messaggio) {
-  const box = document.getElementById("messaggio-errore");
+function mostraErrore(messaggio, id = "messaggio-errore") {
+  const box = document.getElementById(id);
   box.textContent = messaggio;
   box.hidden = false;
 }
@@ -325,22 +325,63 @@ function mostraExtra(dati) {
   });
 }
 
-// ---------- AVVIO ----------
+// ---------- OLOGRAMMI ----------
+// Ogni blocco laterale apre un ologramma con una pagina; il foglio si scarica al primo click
+const SCHEDE = {
+  home:  { url: URL_HOME,  mostra: mostraHome,  caricata: false },
+  cv:    { url: URL_CV,    mostra: mostraCV,    caricata: false },
+  stage: { url: URL_STAGE, mostra: mostraStage, caricata: false },
+  extra: { url: URL_EXTRA, mostra: mostraExtra, caricata: false }
+};
 
-async function avvia() {
+const ologramma = document.getElementById("ologramma");
+
+async function apriOlogramma(nome) {
+  const scheda = SCHEDE[nome];
+
+  // Mostro solo la vista scelta e evidenzio il blocco
+  document.querySelectorAll(".vista").forEach(v => { v.hidden = v.dataset.vista !== nome; });
+  document.querySelectorAll(".blocco").forEach(b => b.classList.toggle("attivo", b.dataset.apri === nome));
+  document.getElementById("errore-ologramma").hidden = true;
+  ologramma.hidden = false;
+  ologramma.dataset.modulo = nome;
+  document.body.classList.add("proiezione");
+  document.getElementById("chiudi").focus();
+
+  if (scheda.caricata) return;
+  scheda.caricata = true;                 // evita di caricare due volte con click ripetuti
   try {
-    // Capisco in che pagina sono guardando quali elementi esistono
-    if (document.getElementById("presentazione")) {
-      mostraHome(await leggiFoglio(URL_HOME));
-    } else if (document.getElementById("lista-dati")) {
-      mostraCV(await leggiFoglio(URL_CV));
-    } else if (document.getElementById("lista-stage")) {
-      mostraStage(await leggiFoglio(URL_STAGE));
-    }
-      else if (document.getElementById("lista-extra")) {
-      mostraExtra(await leggiFoglio(URL_EXTRA));
-    }
+    scheda.mostra(await leggiFoglio(scheda.url));
   } catch (errore) {
+    scheda.caricata = false;              // al prossimo click riprova
+    mostraErrore("Non riesco a caricare i contenuti. Controlla che il foglio sia pubblicato.", "errore-ologramma");
+    console.error(errore);
+  }
+}
+
+function chiudiOlogramma() {
+  ologramma.hidden = true;
+  document.body.classList.remove("proiezione");
+  document.querySelectorAll(".blocco").forEach(b => b.classList.remove("attivo"));
+}
+
+document.querySelectorAll("[data-apri]").forEach(b => {
+  b.addEventListener("click", () => apriOlogramma(b.dataset.apri));
+});
+document.getElementById("chiudi").addEventListener("click", chiudiOlogramma);
+// Click sullo sfondo scuro o tasto Esc: chiude l'ologramma
+ologramma.addEventListener("click", e => { if (e.target === ologramma) chiudiOlogramma(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !ologramma.hidden) chiudiOlogramma(); });
+
+// ---------- AVVIO ----------
+// L'introduzione sta sulla card principale, quindi il foglio Home si carica subito:
+// riempie anche le Passioni, che compaiono quando si apre il modulo
+async function avvia() {
+  SCHEDE.home.caricata = true;
+  try {
+    mostraHome(await leggiFoglio(URL_HOME));
+  } catch (errore) {
+    SCHEDE.home.caricata = false;         // cliccando "Passioni" riprova
     mostraErrore("Non riesco a caricare i contenuti. Controlla che il foglio sia pubblicato.");
     console.error(errore);
   }

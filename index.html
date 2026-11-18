@@ -4,50 +4,102 @@
   <meta charset="UTF-8">
   <!-- Serve per vedere bene il sito da telefono -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home - Sito personale</title>
+  <title>Sito personale</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- MENU (uguale in tutte le pagine) -->
-  <header>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="cv.html">CV</a>
-      <a href="stage.html">Stage</a>
-      <a href="extra.html">Extra</a>
+  <!-- LA MACCHINA: corpo grande a sinistra, quattro blocchi (menu) a destra -->
+  <main class="macchina">
+    <div class="unita">
+    <div class="corpo">
+      <!-- Messaggio mostrato solo se il caricamento del foglio fallisce -->
+      <p id="messaggio-errore" hidden></p>
+
+      <!-- Introduzione (riga "presentazione" del foglio) -->
+      <section id="presentazione">
+        <img id="foto" alt="Foto personale">
+        <div>
+          <h1 id="nome"></h1>
+          <h2 id="qualifica"></h2>
+          <p id="testo"></p>
+        </div>
+      </section>
+
+      <p class="suggerimento">Scegli un modulo &#9656;</p>
+    </div>
+
+    <nav class="lati" aria-label="Menu">
+      <div class="slot"><button type="button" class="blocco" data-apri="home"><span class="num">SSD-01 &middot; 256GB</span>Passioni</button></div>
+      <div class="slot"><button type="button" class="blocco" data-apri="cv"><span class="num">SSD-02 &middot; 512GB</span>CV</button></div>
+      <div class="slot"><button type="button" class="blocco" data-apri="stage"><span class="num">SSD-03 &middot; 1TB</span>Stage</button></div>
+      <div class="slot"><button type="button" class="blocco" data-apri="extra"><span class="num">SSD-04 &middot; 2TB</span>Extra</button></div>
     </nav>
-  </header>
-
-  <main>
-    <!-- Messaggio mostrato solo se il caricamento del foglio fallisce -->
-    <p id="messaggio-errore" hidden></p>
-
-    <!-- Riga "presentazione" del foglio -->
-    <section id="presentazione">
-      <img id="foto" alt="Foto personale">
-      <div>
-        <h1 id="nome"></h1>
-        <h2 id="qualifica"></h2>
-        <p id="testo"></p>
-      </div>
-    </section>
-
-    <!-- Passioni e competenze affiancate: le crea JavaScript -->
-    <div id="colonne">
-      <section>
-        <h2>Passioni</h2>
-        <div id="lista-passioni"></div>
-      </section>
-
-      <section>
-        <h2>Cosa so fare</h2>
-        <div id="lista-competenze"></div>
-      </section>
     </div>
   </main>
 
-  <!-- FOOTER (uguale in tutte le pagine) -->
+  <!-- OLOGRAMMA: si apre cliccando un blocco, mostra il contenuto già creato dal foglio -->
+  <div id="ologramma" class="ologramma" hidden>
+    <div class="proiettore">
+      <button type="button" id="chiudi" class="chiudi" aria-label="Chiudi">&times;</button>
+
+      <div class="pannello">
+        <!-- Messaggio mostrato solo se il caricamento del foglio fallisce -->
+        <p id="errore-ologramma" hidden></p>
+
+        <!-- HOME -->
+        <div class="vista" data-vista="home" hidden>
+
+          <div id="colonne">
+            <section>
+              <h2>Passioni</h2>
+              <div id="lista-passioni"></div>
+            </section>
+
+            <section>
+              <h2>Cosa so fare</h2>
+              <div id="lista-competenze"></div>
+            </section>
+          </div>
+        </div>
+
+        <!-- CV -->
+        <div class="vista" data-vista="cv" hidden>
+          <h1>Curriculum</h1>
+
+          <section>
+            <h2>Informazioni personali</h2>
+            <div id="lista-dati"></div>
+          </section>
+
+          <section>
+            <h2>Istruzione</h2>
+            <div id="lista-istruzione"></div>
+          </section>
+
+          <section>
+            <h2>Esperienze di lavoro</h2>
+            <div id="lista-esperienza"></div>
+          </section>
+        </div>
+
+        <!-- STAGE -->
+        <div class="vista" data-vista="stage" hidden>
+          <h1>Stage</h1>
+          <div id="lista-stage"></div>
+        </div>
+
+        <!-- EXTRA -->
+        <div class="vista" data-vista="extra" hidden>
+          <h1 id="titolo-pagina" hidden></h1>
+          <p id="intro-pagina" hidden></p>
+          <div id="lista-extra"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
   <footer>
     <div>
       <p>Indirizzo: Via San Mamete 12</p>
@@ -55,8 +107,8 @@
       <p>Cellulare: 389-204-1604</p>
     </div>
     <a href="https://immaginazioneelavoro.it/open-day-milano/?gad_source=1&gad_campaignid=24327095932&gbraid=0AAAAAoOfHwgJyGvzYMx9QCczQFlwP1UUt&gclid=CjwKCAiAqabXBhBUEiwAw_SQpbtAdzAyPDXIyrjMcNCM66no23L9yiR5jQZ7YLmkwtlrk2xwnnA6aBoC5gIQAvD_BwE" target="_blank" rel="noopener noreferrer">
-  <img class="imglogo" src="img/immmaginazioine.jpg" alt="Logo Immaginazione e Lavoro, vai all'Open Day">
-</a>
+      <img class="imglogo" src="img/immmaginazioine.jpg" alt="Logo Immaginazione e Lavoro, vai all'Open Day">
+    </a>
   </footer>
 
   <script src="script.js"></script>

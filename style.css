@@ -1,449 +1,1453 @@
-/* Palette: oro, nero, argento */
+/* Macchina rosso/nero: corpo a sinistra, blocchi-menu a destra, ologrammi rossi */
 :root {
-  --oro: #d4af37;
-  --oro-chiaro: #f0cf5a;
+  --rosso: #e11d2e;
+  --rosso-chiaro: #ff4d5a;
+  --rosso-scuro: #7a0c14;
   --nero: #0a0a0a;
-  --nero-card: #1a1a1a;
-  --nero-card-hover: #2a2a2a;
-  --argento: #c0c0c0;
+  --acciaio: #1c1c1c;
+  --acciaio-chiaro: #2c2c2c;
+  --argento: #b5b5b5;
   --argento-chiaro: #e6e6e6;
-  --bordo: #3d3d3d;
+  --bordo: #444;
   --testo: #e6e6e6;
-  --testo-tenue: #9a9a9a;
+  --testo-tenue: #8a8a8a;
+
+  --font-titoli: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  --font-testo: "Courier New", Consolas, monospace;
+
+  --rivetto: #9a9a9a 0 1.5px, #3a3a3a 2.5px 3.5px, transparent 4.5px;
+  --rivetti:
+    radial-gradient(circle at 9px 9px, var(--rivetto)),
+    radial-gradient(circle at calc(100% - 9px) 9px, var(--rivetto)),
+    radial-gradient(circle at 9px calc(100% - 9px), var(--rivetto)),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), var(--rivetto));
+  --strisce: repeating-linear-gradient(-45deg, var(--rosso) 0 12px, #0a0a0a 12px 24px);
 }
 
-/* Stile base comune a tutte le pagine */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-testo);
   line-height: 1.5;
   color: var(--testo);
-  background: var(--nero);
-  /* Il footer resta in fondo alla finestra anche con poco contenuto */
+  background-color: var(--nero);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-h1, h2 {
-  color: var(--oro);
-}
-
-/* Menu in alto */
-/* Menu in alto: tasselli ruotati con sfumature, tagliati dal bordo superiore */
-nav {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 30px;
-  height: 170px;
-  padding: 0 24px;
-  overflow: hidden;                 /* taglia la parte alta dei tasselli */
-    background: linear-gradient(120deg, #050505, #2b2208);   /* nero che sfuma in un oro scurissimo */
-  border-bottom: 3px solid var(--oro);
-}
-
-nav a {
-  flex: 0 0 150px;
-  height: 190px;
-  margin-top: -60px;                /* spinge il tassello in alto, così viene tagliato */
-  display: flex;
-  align-items: flex-end;            /* scritta in basso a sinistra */
-  padding: 16px;
-  color: var(--nero);
-  font-weight: bold;
-  text-transform: uppercase;
-  text-decoration: none;
-  transform: rotate(-25deg);        /* tassello e scritta inclinati */
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-/* Un colore diverso per ogni tassello */
-/* Tasselli alternati: oro e nero */
-nav a:nth-child(1),
-nav a:nth-child(3) {
-  background: linear-gradient(135deg, #f0cf5a, #c9a227);   /* oro */
-}
-
-nav a:nth-child(2),
-nav a:nth-child(4) {
-  background: linear-gradient(135deg, #222, #0a0a0a);      /* nero */
-  color: var(--oro);                                       /* scritta oro */
-  box-shadow: inset 0 0 0 2px var(--oro);                  /* bordo oro interno */
-}
-
-nav a:hover {
-  transform: rotate(-25deg) scale(1.06);   /* resta inclinato e cresce un po' */
-  filter: brightness(1.1);
-}
-
-/* Sul telefono i tasselli sono più piccoli, per stare tutti e quattro nella riga */
-@media (max-width: 600px) {
-  nav {
-    height: 120px;
-    gap: 14px;
-    padding: 0 12px;
-  }
-
-  nav a {
-    flex: 0 0 64px;
-    height: 120px;
-    margin-top: -40px;
-    padding: 8px;
-    font-size: 0.7em;
-  }
-}
-
-main {
-  flex: 1;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 16px;
-}
-
-/* Immagine di sfondo semitrasparente, solo nella Home */
-body:has(#presentazione)::before {
+/* Immagine di sfondo semitrasparente */
+body::before {
   content: "";
   position: fixed;
   inset: 0;
-  /* cover = l'immagine riempie tutta l'area, senza deformarsi e senza spazi vuoti
-     (se vuoi vederla intera, anche con bordi vuoti, usa "contain") */
   background: url("img/sfondo.jpg") center / cover no-repeat;
-  opacity: 0.2;          /* più basso = più trasparente */
+  opacity: 0.1;
   z-index: -1;
   pointer-events: none;
 }
 
-/* ---------- HOME: due colonne ----------
-   A sinistra: Passioni (card 2 sopra + 1 larga sotto) e Cosa so fare (barre)
-   A destra: presentazione (foto rotonda sopra, testo sotto) */
-body:has(#presentazione) main {
-  max-width: 1100px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: 0 48px;
-  align-items: start;
+h1, h2, h3, h4 {
+  font-family: var(--font-titoli);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: normal;
 }
 
-/* Il contenitore non conta: le sue due sezioni diventano elementi della griglia */
-#colonne {
-  display: contents;
+h1 {
+  color: var(--rosso-chiaro);
+  font-size: 2.2em;
+  line-height: 1;
+  border-left: 10px solid var(--rosso);
+  padding-left: 14px;
+  text-shadow: 0 0 12px rgba(225, 29, 46, 0.7);
 }
 
-#messaggio-errore {
-  grid-column: 1 / -1;
-  grid-row: 1;
+h2 {
+  color: var(--argento-chiaro);
+  border-bottom: 2px dashed rgba(255, 77, 90, 0.4);
+  padding-bottom: 4px;
 }
 
-#colonne > section:nth-child(1) {   /* Passioni */
-  grid-column: 1;
-  grid-row: 2;
+h2::before { content: "// "; color: var(--rosso); }
+
+/* ---------- LA MACCHINA ---------- */
+.macchina {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 16px;
 }
 
-#colonne > section:nth-child(2) {   /* Cosa so fare */
-  grid-column: 1;
-  grid-row: 3;
+/* Corpo grande, con lo spigolo in alto a sinistra smussato */
+.corpo {
+  position: relative;
+  flex: 1;
+  aspect-ratio: 7 / 6;
+  min-height: 300px;
+  background: var(--rivetti), linear-gradient(145deg, #2e2e2e 0%, #1a1a1a 55%, #0e0e0e 100%);
+  box-shadow: inset 0 0 0 3px #4a4a4a, inset 0 8px 0 0 var(--rosso);
+  clip-path: polygon(0 14%, 12% 0, 100% 0, 100% 100%, 0 100%);
 }
 
-#presentazione {                    /* a destra, alta quanto le due sezioni */
-  grid-column: 2;
-  grid-row: 2 / span 2;
-  margin-top: 80px;                 /* la sposta più in basso */
+/* L'occhio: una lente rossa che pulsa */
+.occhio {
+  position: absolute;
+  top: 12%;
+  right: 13%;
+  width: clamp(60px, 17%, 130px);
+  aspect-ratio: 1 / 1.1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff9aa2, var(--rosso) 35%, #5a0710 72%, #000);
+  border: 5px solid #666;
+  box-shadow: 0 0 22px rgba(225, 29, 46, 0.8), inset 0 0 14px #000;
+  animation: pulsa 2.4s ease-in-out infinite;
 }
 
-/* Sotto i 900px di larghezza tutto va in una colonna: presentazione, Passioni, Cosa so fare */
-@media (max-width: 900px) {
-  body:has(#presentazione) main {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  #messaggio-errore,
-  #presentazione,
-  #colonne > section:nth-child(1),
-  #colonne > section:nth-child(2) {
-    grid-column: 1;
-    grid-row: auto;
-  }
+/* La bocca: onda rossa */
+.bocca {
+  position: absolute;
+  left: 6%;
+  top: 64%;
+  width: 80%;
+  height: 12%;
+  overflow: visible;
 }
 
-/* Presentazione: foto rotonda sopra, testo sotto, tutto centrato */
-#presentazione {
+.bocca polyline {
+  fill: none;
+  stroke: var(--rosso);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(255, 77, 90, 0.9));
+}
+
+.suggerimento {
+  position: absolute;
+  left: 6%;
+  bottom: 12px;
+  margin: 0;
+  font-size: 0.75em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--testo-tenue);
+}
+
+/* Quando un ologramma è aperto, la macchina "lavora" */
+.proiezione .occhio { animation-duration: 0.8s; }
+.proiezione .bocca polyline { animation: onda 0.6s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+
+/* ---------- I BLOCCHI LATERALI (menu) ---------- */
+.lati {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 16px;
+  width: clamp(110px, 19%, 190px);
+  margin-left: -3px;
 }
 
-#presentazione > div {
-  max-width: 600px;
+.blocco {
+  position: relative;
+  height: clamp(68px, 9.5vw, 118px);
+  margin-bottom: -2px;
+  padding: 0 16px;
+  text-align: left;
+  font-family: var(--font-titoli);
+  font-size: 1.15em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(145deg, #ff4d5a, #a8121e);
+  border: 2px solid #4a4a4a;
+  border-radius: 0 10px 24px 0;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
+
+/* Ogni blocco è più corto del precedente, come nel disegno */
+.blocco:nth-child(1) { width: 100%; }
+.blocco:nth-child(2) { width: 88%; }
+.blocco:nth-child(3) { width: 74%; }
+.blocco:nth-child(4) { width: 62%; }
+
+/* Colori alternati: rosso e nero */
+.blocco:nth-child(even) {
+  background: linear-gradient(145deg, #2c2c2c, #0a0a0a);
+  color: var(--rosso-chiaro);
+}
+
+/* Piccolo rivetto */
+.blocco::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ccc, #444);
+}
+
+.blocco:hover { transform: translateX(8px); filter: brightness(1.2); }
+
+.blocco.attivo {
+  transform: translateX(8px);
+  box-shadow: 0 0 22px rgba(255, 77, 90, 0.9), inset 0 0 14px rgba(255, 255, 255, 0.25);
+  border-color: var(--rosso-chiaro);
+}
+
+/* Telefono: i blocchi vanno in fila sotto il corpo */
+@media (max-width: 700px) {
+  .macchina { flex-direction: column; padding: 20px 12px; }
+  .corpo { width: 100%; flex: none; }
+  .lati { flex-direction: row; width: 100%; margin: 4px 0 0; gap: 4px; }
+  .lati .blocco:nth-child(n) {
+    flex: 1;
+    width: auto;
+    height: 56px;
+    margin: 0;
+    padding: 0 8px;
+    font-size: 0.9em;
+    text-align: center;
+    border-radius: 0 0 14px 14px;
+  }
+  .blocco:hover, .blocco.attivo { transform: translateY(4px); }
+}
+
+/* ---------- OLOGRAMMA ---------- */
+.ologramma {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: radial-gradient(circle at 50% 70%, rgba(120, 10, 20, 0.4), rgba(0, 0, 0, 0.82));
+  animation: accendi 0.25s ease-out;
+}
+
+.ologramma[hidden] { display: none; }
+
+.proiettore {
+  position: relative;
+  width: min(920px, 100%);
+  max-height: 86vh;
+  display: flex;
+}
+
+/* Alone di luce alla base, da cui sembra uscire la proiezione */
+.proiettore::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -16px;
+  height: 18px;
+  background: radial-gradient(ellipse at center, rgba(255, 77, 90, 0.85), transparent 70%);
+  pointer-events: none;
+}
+
+.pannello {
+  width: 100%;
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 28px 26px 24px;
+  color: #ffe3e5;
+  /* righe orizzontali + vetro rosso scuro */
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
+    rgba(30, 0, 4, 0.82);
+  border: 1px solid rgba(255, 77, 90, 0.85);
+  border-radius: 6px;
+  box-shadow: 0 0 34px rgba(225, 29, 46, 0.5), inset 0 0 44px rgba(225, 29, 46, 0.16);
+  transform-origin: 50% 100%;
+  animation: proietta 0.45s ease-out, sfarfalla 5s linear 0.5s infinite;
+}
+
+.chiudi {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  font-size: 1.5em;
+  line-height: 1;
+  color: var(--rosso-chiaro);
+  background: #000;
+  border: 1px solid var(--rosso);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chiudi:hover { background: var(--rosso); color: #fff; }
+
+/* Home dentro l'ologramma */
+#presentazione {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+#presentazione > div { flex: 1 1 260px; }
 
 #foto {
-  width: 220px;
-  height: 220px;
+  width: 170px;
+  height: 170px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid var(--oro);
+  border: 5px solid var(--rosso);
+  box-shadow: 0 0 0 5px #111, 0 0 0 7px #777, 0 0 22px rgba(225, 29, 46, 0.7);
 }
 
-/* Card delle passioni: 2 per riga; l'ultima, se è dispari, occupa tutta la riga */
+#colonne {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 760px) {
+  #colonne { grid-template-columns: minmax(0, 1fr); }
+}
+
 #lista-passioni {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
 }
 
-#lista-passioni .card:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-}
-
-/* Sul telefono le card vanno una sotto l'altra */
-@media (max-width: 500px) {
-  #lista-passioni {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
+/* Card: vetrini olografici */
 .card {
-  flex: 1 1 250px;
-  background: linear-gradient(135deg, #0a0a0a 0%, #3a2d0a 55%, #b8921f 100%);   /* nero → oro */
-  border: 1px solid var(--bordo);
-  border-top: 4px solid var(--oro);
-  border-radius: 8px;
+  background: rgba(225, 29, 46, 0.07);
+  border: 1px solid rgba(255, 77, 90, 0.55);
+  border-top: 3px solid var(--rosso-chiaro);
+  border-radius: 4px;
   padding: 12px;
+  box-shadow: 0 0 14px rgba(225, 29, 46, 0.25), inset 0 0 18px rgba(225, 29, 46, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.card h3 {
-  color: var(--argento-chiaro);
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 24px rgba(255, 77, 90, 0.6), inset 0 0 22px rgba(225, 29, 46, 0.18);
 }
+
+.card h3 { color: var(--argento-chiaro); font-size: 1.25em; }
+.card:hover h3 { color: #fff; }
 
 .card img {
   width: 100%;
-  height: 160px;
+  height: 150px;
   object-fit: cover;
+  border: 1px solid rgba(255, 77, 90, 0.6);
+  filter: contrast(1.05) saturate(0.8);
 }
 
-/* Barre delle competenze: nome a sinistra, barra orizzontale accanto */
-.competenza {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
+/* Barre delle competenze a tacche */
+.competenza { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 
 .competenza p {
   margin: 0;
-  flex: 0 0 140px;          /* spazio fisso per il nome, così le barre partono dallo stesso punto */
+  flex: 0 0 140px;
+  font-size: 0.9em;
+  text-transform: uppercase;
 }
 
 .barra {
-  flex: 1;                  /* la barra occupa lo spazio che resta */
-  background: var(--bordo);
-  height: 12px;
-  border-radius: 6px;
+  flex: 1;
+  background: #050505;
+  height: 16px;
+  border: 2px solid #666;
+  border-radius: 2px;
+  box-shadow: inset 0 0 6px #000;
+  overflow: hidden;
 }
 
 .barra-piena {
-  background: var(--oro);
+  background: repeating-linear-gradient(90deg, var(--rosso) 0 10px, transparent 10px 13px);
   height: 100%;
-  border-radius: 6px;
 }
 
-/* Messaggio di errore */
 #messaggio-errore {
-  background: var(--oro);
-  color: var(--nero);
+  background: var(--rosso);
+  color: #fff;
   font-weight: bold;
   padding: 12px;
-  border-radius: 6px;
+  border: 3px solid #fff;
+  outline: 3px solid var(--nero);
+  text-transform: uppercase;
 }
 
-/* Footer */
+/* CV */
+.voce {
+  border-left: 6px solid var(--rosso);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 8px 12px;
+  margin-bottom: 16px;
+}
+
+.voce h3 { margin: 0; color: var(--argento-chiaro); }
+.sottotitolo { margin: 0; font-weight: bold; color: var(--argento); }
+.periodo { margin: 0 0 4px 0; color: var(--testo-tenue); font-size: 0.9em; }
+
+/* Stage */
+.stage { margin-bottom: 36px; }
+.stage .card { max-width: 500px; margin-bottom: 16px; }
+
+.stage .card img {
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  background: var(--nero);
+  margin-bottom: 8px;
+}
+
+.stage .card ul { margin: 4px 0 0 0; padding-left: 20px; }
+.relazione { white-space: pre-line; }
+
+/* Extra */
+#intro-pagina { color: var(--argento); margin-bottom: 24px; }
+
+#lista-extra {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.scheda { display: flex; flex-direction: column; }
+.scheda img { margin-bottom: 8px; }
+
+.etichetta {
+  align-self: flex-start;
+  color: var(--rosso-chiaro);
+  border: 2px solid var(--rosso);
+  font-size: 0.75em;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1px 10px;
+  border-radius: 2px;
+}
+
+/* Pulsanti: piastre rosse angolate */
+.pulsante, .guarda {
+  display: inline-block;
+  align-self: flex-start;
+  background: linear-gradient(180deg, #ff4d5a, #b0121f);
+  color: #fff;
+  font-family: var(--font-titoli);
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  padding: 9px 22px;
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  transition: filter 0.15s ease;
+}
+
+.pulsante { margin-top: auto; }
+.guarda { margin-top: 10px; }
+.pulsante:hover, .guarda:hover { filter: brightness(1.25); }
+
+/* Dettagli nascosti finché non si clicca il pulsante */
+.dettagli { display: none; }
+.aperta .dettagli { display: block; }
+
+/* ---------- FOOTER ---------- */
 footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 16px;
-  background: linear-gradient(90deg, #0a0a0a 0%, #2b2208 60%, #a88418 100%);   /* nero → oro, da sinistra a destra */
+  padding: 20px 24px;
+  background: var(--rivetti), linear-gradient(0deg, #101010, #252525);
   color: var(--argento);
-  border-top: 3px solid var(--oro);
+  border-top: 10px solid;
+  border-image: var(--strisce) 10;
 }
 
-footer p {
-  margin: 4px 0;
-}
+footer p { margin: 4px 0; }
 
-/* Logo nel footer: mantiene le proporzioni e sta bene sul nero */
 .imglogo {
   width: 160px;
   max-width: 100%;
   height: auto;
-  background: var(--argento-chiaro);   /* riquadro chiaro dietro al logo */
+  background: var(--argento-chiaro);
   padding: 8px 12px;
-  border-radius: 8px;
+  border: 2px solid #666;
+  border-radius: 3px;
 }
 
-/* Logo cliccabile */
-footer a {
-  display: inline-block;
-  transition: transform 0.2s ease;
+footer a { display: inline-block; transition: transform 0.2s ease; }
+footer a:hover { transform: scale(1.05); }
+
+/* ---------- ANIMAZIONI ---------- */
+@keyframes pulsa {
+  50% { box-shadow: 0 0 40px rgba(255, 77, 90, 1), inset 0 0 14px #000; }
 }
 
-footer a:hover {
-  transform: scale(1.05);
+@keyframes onda {
+  50% { transform: scaleY(0.4); }
 }
 
-/* Pagina CV */
-.voce {
-  border-left: 4px solid var(--oro);
-  padding-left: 12px;
-  margin-bottom: 16px;
+@keyframes accendi {
+  from { opacity: 0; }
 }
 
-.voce h3 {
-  margin: 0;
-  color: var(--argento-chiaro);
+/* La proiezione si accende: parte da una linea sottile e si apre verso l'alto */
+@keyframes proietta {
+  from { opacity: 0; transform: scale(0.6, 0.03); filter: brightness(3); }
+  60%  { opacity: 1; transform: scale(1, 0.92); }
+  to   { transform: none; filter: none; }
 }
 
-.sottotitolo {
-  margin: 0;
-  font-weight: bold;
-  color: var(--argento);
+@keyframes sfarfalla {
+  0%, 91%, 100% { opacity: 1; }
+  93% { opacity: 0.85; }
+  95% { opacity: 1; }
+  96% { opacity: 0.9; }
 }
 
-.periodo {
-  margin: 0 0 4px 0;
-  color: var(--testo-tenue);
-  font-size: 0.9em;
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }
 
-/* Pagina Stage */
-.stage {
-  margin-bottom: 40px;
+/* =====================================================================
+   STILE MECHA: piastre d'armatura, spigoli smussati, HUD da cabina
+   ===================================================================== */
+
+/* --- Corpo: linee di giunzione e sigla --- */
+.corpo::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 47%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.08);
 }
 
-.stage .card {
-  max-width: 500px;
-  margin-bottom: 16px;
+.corpo::after {
+  content: "MK-01 // ONLINE";
+  position: absolute;
+  top: 16px;
+  left: 16%;
+  font-size: 0.7em;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.4);
 }
 
-/* Immagine dello stage: si vede tutta, senza tagli */
-.stage .card img {
-  width: 100%;
-  height: auto;
-  max-height: 300px;
-  object-fit: contain;
-  background: var(--nero);
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
-
-.stage .card ul {
-  margin: 4px 0 0 0;
-  padding-left: 20px;
-}
-
-/* Mantiene gli a capo e i paragrafi scritti nella cella */
-.relazione {
-  white-space: pre-line;
-}
-
-/* Pagina Extra */
-#intro-pagina {
-  color: var(--argento);
-  margin-bottom: 24px;
-}
-
-/* Griglia: card affiancate su schermo largo, una sotto l'altra sul telefono */
-#lista-extra {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
-}
-
-.scheda {
+/* --- Blocchi laterali: piastre d'armatura con numero di unità e LED --- */
+.lati .blocco {
+  --base: linear-gradient(145deg, #ff4d5a, #a8121e);
+  --banda: #111;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0 14px 12px 24px;
+  border: none;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0 2px, transparent 2px),
+    linear-gradient(90deg, var(--banda) 0 10px, transparent 10px),
+    repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0 6px, transparent 6px 12px),
+    var(--base);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
 }
 
-.scheda img {
-  margin-bottom: 8px;
+.lati .blocco:nth-child(even) {
+  --base: linear-gradient(145deg, #2c2c2c, #0a0a0a);
+  --banda: var(--rosso);
 }
 
-/* Piccola etichetta con la categoria */
-.etichetta {
-  align-self: flex-start;
-  background: var(--argento);
-  color: var(--nero);
-  font-size: 0.75em;
-  font-weight: bold;
-  padding: 2px 10px;
-  border-radius: 999px;
+.blocco .num {
+  font-family: var(--font-testo);
+  font-size: 0.5em;
+  letter-spacing: 0.2em;
+  opacity: 0.8;
 }
 
-/* Pulsante "Apri": resta in fondo alla card */
-.pulsante {
-  align-self: flex-start;
-  margin-top: auto;
-  background: var(--argento);
-  color: var(--nero);
-  font-weight: bold;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+/* Il rivetto diventa un LED lampeggiante */
+.lati .blocco::after {
+  top: 12px;
+  right: 26px;
+  width: 9px;
+  height: 9px;
+  background: #fff;
+  box-shadow: 0 0 8px #fff;
+  animation: led 1.6s steps(2) infinite;
 }
 
-.pulsante:hover {
-  background: var(--oro);
+.lati .blocco.attivo {
+  border: none;
+  box-shadow: inset 0 0 0 3px #fff, inset 0 0 26px rgba(255, 255, 255, 0.35);
 }
 
-/* Effetto al passaggio del mouse: card più grandi e colorate */
+.lati .blocco.attivo::after { animation: none; }
+
+/* --- Ologramma: angoli da mirino e barra di stato --- */
+.proiettore::before {
+  --l: var(--rosso-chiaro);
+  content: "";
+  position: absolute;
+  inset: -7px;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--l), var(--l)) top left / 30px 3px no-repeat,
+    linear-gradient(var(--l), var(--l)) top left / 3px 30px no-repeat,
+    linear-gradient(var(--l), var(--l)) top right / 30px 3px no-repeat,
+    linear-gradient(var(--l), var(--l)) top right / 3px 30px no-repeat,
+    linear-gradient(var(--l), var(--l)) bottom left / 30px 3px no-repeat,
+    linear-gradient(var(--l), var(--l)) bottom left / 3px 30px no-repeat,
+    linear-gradient(var(--l), var(--l)) bottom right / 30px 3px no-repeat,
+    linear-gradient(var(--l), var(--l)) bottom right / 3px 30px no-repeat;
+}
+
+.pannello::before {
+  content: "▌ MODULO // ONLINE";
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: -28px -26px 22px;
+  padding: 9px 60px 9px 26px;
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(225, 29, 46, 0.85), rgba(60, 0, 8, 0.92) 70%);
+  border-bottom: 2px solid var(--rosso-chiaro);
+}
+
+.ologramma[data-modulo="home"] .pannello::before  { content: "▌ MODULO 01 // PASSIONI // ONLINE"; }
+.ologramma[data-modulo="cv"] .pannello::before    { content: "▌ MODULO 02 // CV // ONLINE"; }
+.ologramma[data-modulo="stage"] .pannello::before { content: "▌ MODULO 03 // STAGE // ONLINE"; }
+.ologramma[data-modulo="extra"] .pannello::before { content: "▌ MODULO 04 // EXTRA // ONLINE"; }
+
+/* --- Titoli: targhe d'armatura --- */
+h1 {
+  padding: 6px 14px;
+  background: linear-gradient(90deg, rgba(225, 29, 46, 0.3), transparent 75%);
+}
+
+h2 {
+  border-bottom: none;
+  border-left: 4px solid var(--rosso);
+  padding: 3px 10px;
+  background: linear-gradient(90deg, rgba(225, 29, 46, 0.35), transparent 70%);
+}
+
+/* --- Card e voci: pannelli con angoli tagliati --- */
 .card {
-  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  border: none;
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 77, 90, 0.6),
+    inset 0 3px 0 0 var(--rosso-chiaro),
+    inset 0 0 22px rgba(225, 29, 46, 0.12);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 }
 
 .card:hover {
-  transform: scale(1.04);               /* un po' più grande */
-  background: linear-gradient(135deg, #1a1a1a 0%, #5a4510 50%, #e0b92e 100%);   /* più oro */
-  border-color: var(--oro);
-  position: relative;                   /* la card ingrandita sta sopra le vicine */
-  z-index: 1;
+  box-shadow:
+    inset 0 0 0 2px var(--rosso-chiaro),
+    inset 0 3px 0 0 #fff,
+    inset 0 0 30px rgba(225, 29, 46, 0.3);
 }
 
-.card:hover h3 {
-  color: var(--oro);                    /* il titolo diventa oro */
+.voce {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
 }
 
-/* Pulsante "Guardare di più" / "Mostra meno" */
-.guarda {
-  display: inline-block;
-  margin-top: 8px;
-  background: var(--argento);
-  color: var(--nero);
-  font: inherit;
-  font-weight: bold;
+.etichetta { border-radius: 0; }
+
+/* Foto: cornice ottagonale rossa */
+#foto {
   border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
+  border-radius: 0;
+  padding: 5px;
+  background: var(--rosso);
+  box-shadow: none;
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
 }
 
-.guarda:hover {
-  background: var(--oro);
+.chiudi { border-radius: 0; }
+
+@keyframes led {
+  50% { opacity: 0.15; }
 }
 
-/* Dettagli nascosti finché non si clicca il pulsante */
-.dettagli {
-  display: none;
+@media (max-width: 700px) {
+  .lati .blocco:nth-child(n) { align-items: center; padding: 0 8px 8px; }
 }
 
-.aperta .dettagli {
-  display: block;
+/* =====================================================================
+   STILE "PIASTRE DIAGONALI": acciaio scuro, tagli a 45°, strisce rosse
+   ===================================================================== */
+
+/* Sfondo: piastre diagonali (file sfondo-mecha.svg) */
+body {
+  background: #050507 url("sfondo-mecha.svg") center / cover fixed no-repeat;
+}
+
+/* --- Corpo: piastre diagonali, striscia rossa luminosa, contorno sottile --- */
+.corpo {
+  background: linear-gradient(135deg,
+    #34343c 0 36%, #060608 36% 39%, #1e1e24 39% 66%, #060608 66% 68%, #2a2a31 68% 100%);
+  box-shadow: inset 0 0 0 2px #050507, inset 0 0 0 3px rgba(225, 29, 46, 0.6);
+  clip-path: polygon(0 14%, 12% 0, 100% 0, 100% 86%, 88% 100%, 0 100%);
+}
+
+.corpo::before {
+  content: "";
+  position: absolute;
+  top: 34%;
+  left: -8%;
+  width: 62%;
+  height: 16px;
+  transform: rotate(-45deg);
+  transform-origin: left center;
+  background: linear-gradient(90deg, transparent, #ff6b75 20%, #e11d2e 60%, transparent);
+  box-shadow: 0 0 16px rgba(225, 29, 46, 0.8);
+}
+
+/* --- Blocchi laterali: piastre d'acciaio con striscia rossa diagonale --- */
+.lati .blocco {
+  --base: linear-gradient(135deg, #40404a, #18181e);
+  background:
+    linear-gradient(135deg, transparent 0 60%, #ff6b75 60% 62%, #e11d2e 62% 72%, #4a0710 72% 74%, transparent 74%),
+    var(--base);
+  clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+  box-shadow: inset 0 0 0 1px rgba(225, 29, 46, 0.55);
+}
+
+.lati .blocco:nth-child(even) {
+  --base: linear-gradient(135deg, #1d1d23, #07070a);
+}
+
+.lati .blocco:nth-child(odd) { color: #fff; }
+
+/* Blocco aperto: la piastra si accende di rosso */
+.lati .blocco.attivo {
+  --base: linear-gradient(135deg, #7a0c14, #e11d2e);
+  box-shadow: inset 0 0 0 2px #ff4d5a, inset 0 0 26px rgba(255, 77, 90, 0.55);
+}
+
+/* --- Ologramma: bande diagonali sottili sul vetro, barra con taglio a 45° --- */
+.pannello {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, transparent 0 28%, rgba(225, 29, 46, 0.1) 28% 30%, transparent 30% 62%, rgba(225, 29, 46, 0.1) 62% 63%, transparent 63%),
+    rgba(20, 0, 3, 0.84);
+}
+
+.pannello::before {
+  background: linear-gradient(90deg, #e11d2e, #5a0710 45%, rgba(10, 0, 2, 0.95) 80%);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
+}
+
+/* --- Card: tagli a 45° in alto a sinistra e in basso a destra, tacche rosse --- */
+.card {
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 40%),
+    rgba(225, 29, 46, 0.07);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 22px;
+  width: 36px;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, rgba(225, 29, 46, 0.8) 0 2px, transparent 2px 5px);
+  pointer-events: none;
+}
+
+.voce {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+
+/* --- Footer: piastre diagonali e striscia rossa luminosa --- */
+footer {
+  background: linear-gradient(135deg,
+    #1a1a1f 0 36%, #060608 36% 39%, #2a2a31 39% 66%, #060608 66% 68%, #16161b 68% 100%);
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, #000, #e11d2e 25%, #ff6b75 50%, #e11d2e 75%, #000) 1;
+}
+
+/* =====================================================================
+   FORMA DEI TASTI (dal disegno): lato sinistro dritto, lato superiore
+   più corto, lato destro che scende in diagonale (leggermente curvo)
+   ===================================================================== */
+.lati .blocco {
+  clip-path: polygon(0 0, 76% 0, 80% 31%, 85% 49%, 92.5% 75%, 100% 100%, 0 100%);
+}
+
+/* La striscia rossa corre parallela al lato inclinato */
+.lati .blocco {
+  background:
+    linear-gradient(69deg, transparent 0 66%, #ff6b75 66% 68%, #e11d2e 68% 74%, #4a0710 74% 76%, transparent 76%),
+    var(--base);
+}
+
+/* Il LED resta dentro la forma */
+.lati .blocco::after {
+  right: 54px;
+}
+
+/* =====================================================================
+   MODULI = BARRETTE RAM a trapezio rettangolo, che scorrono fuori come un disco
+   ===================================================================== */
+
+/* --- Card al centro dello schermo (asse X e Y): spazio vuoto sopra --- */
+.macchina {
+  flex: 0 1 auto;
+  margin: auto;                 /* centra in verticale e in orizzontale */
+}
+
+@media (min-width: 701px) {
+  /* il padding sopra è più grande di quello sotto di quanto è alto il footer,
+     così la card cade al centro dell'intera finestra e non solo sopra il footer */
+  .macchina { padding: 130px 16px 16px; }
+  .lati { gap: 8px; }
+}
+
+/* Spazio per il modulo che scivola fuori a destra, senza barra di scorrimento */
+body { overflow-x: clip; }
+
+/* --- Rimossi: luce rossa (occhio), linea rossa ondulata e striscia luminosa sulla card --- */
+.corpo::before { content: none; }
+
+/* --- Alloggiamento fisso: tiene stabile l'hover mentre il modulo si sposta --- */
+.slot:nth-child(1) { width: 100%; }
+.slot:nth-child(2) { width: 88%; }
+.slot:nth-child(3) { width: 74%; }
+.slot:nth-child(4) { width: 62%; }
+
+/* --- Barretta RAM: trapezio rettangolo con tacca, chip e contatti --- */
+.lati .slot .blocco {
+  --base: linear-gradient(180deg, #4a4a54, #202026);   /* circuito stampato */
+  --chip: #050507;                                      /* chip di memoria */
+  --pin: #cfcfd4;                                       /* contatti */
+  width: 100%;
+  height: clamp(84px, 9.5vw, 112px);
+  margin: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 9px 14px 0 16px;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  color: #fff;
+
+  /* livelli, dall'alto: contatti, filo rosso, bordo chip, chip, circuito */
+  background-image:
+    repeating-linear-gradient(90deg, var(--pin) 0 3px, transparent 3px 5px),
+    linear-gradient(#e11d2e, #e11d2e),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 30px, transparent 30px 40px),
+    repeating-linear-gradient(90deg, var(--chip) 0 30px, transparent 30px 40px),
+    var(--base);
+  background-size:
+    100% 14%,
+    100% 2px,
+    calc(100% - 28px) 1px,
+    calc(100% - 28px) 36%,
+    auto;
+  background-position:
+    0 100%,
+    0 83%,
+    14px 44%,
+    14px 68.75%,
+    0 0;
+  background-repeat: no-repeat;
+
+  /* trapezio rettangolo: lato sinistro dritto, lato destro inclinato, tacca sul bordo dei contatti */
+  clip-path: polygon(
+    0 0, 76% 0, 100% 100%,
+    calc(60% + 8px) 100%, calc(60% + 8px) calc(100% - 9px),
+    60% calc(100% - 9px), 60% 100%,
+    0 100%);
+
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease;
+}
+
+.lati .slot:nth-child(even) .blocco {
+  --base: linear-gradient(180deg, #26262c, #0a0a0d);
+  --chip: #34343c;
+  color: var(--rosso-chiaro);
+}
+
+/* Modulo aperto: il circuito diventa rosso */
+.lati .slot .blocco.attivo {
+  --base: linear-gradient(180deg, #a3121f, #5a0710);
+  --chip: #120204;
+  color: #fff;
+  transform: none;
+  box-shadow: inset 0 0 0 2px #ff4d5a, inset 0 0 26px rgba(255, 77, 90, 0.55);
+}
+
+/* Passando sopra, il modulo scivola fuori come un disco e poi torna al suo posto */
+.lati .slot:hover .blocco {
+  transform: translateX(46px);
+  filter: brightness(1.15);
+}
+
+/* Telefono: i moduli stanno in fila e scivolano verso il basso */
+@media (max-width: 700px) {
+  .lati .slot:nth-child(n) { flex: 1; width: auto; }
+  .lati .slot .blocco:nth-child(n) { width: 100%; height: 64px; padding: 6px 8px 0; align-items: center; }
+  .blocco .num { display: none; }
+  .lati .slot:hover .blocco { transform: translateY(12px); }
+}
+
+/* =====================================================================
+   INTRODUZIONE NELLA CARD + MODULI PIÙ LUNGHI, COLLEGATI ALLA CARD
+   ===================================================================== */
+
+/* Card principale sopra ai moduli: la parte "inserita" dei moduli resta nascosta dietro */
+.corpo {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 6% 48px;
+  /* bordo destro dritto: è lo slot in cui entrano i moduli */
+  clip-path: polygon(0 14%, 12% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Introduzione su un pannello scuro, per leggere bene sopra le piastre */
+.corpo #presentazione {
+  width: 100%;
+  margin: 0;
+  gap: 20px;
+  padding: 18px 20px;
+  background: rgba(8, 8, 10, 0.76);
+  box-shadow: inset 0 0 0 1px rgba(225, 29, 46, 0.5);
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+
+.corpo #foto { width: 140px; height: 140px; }
+.corpo h1 { font-size: 1.8em; }
+.corpo #testo { margin: 8px 0 0; font-size: 0.9em; }
+
+.corpo #messaggio-errore {
+  position: absolute;
+  top: 56px;
+  left: 6%;
+  right: 6%;
+}
+
+#errore-ologramma {
+  background: var(--rosso);
+  color: #fff;
+  font-weight: bold;
+  padding: 12px;
+  border: 3px solid #fff;
+  outline: 3px solid var(--nero);
+  text-transform: uppercase;
+}
+
+/* I moduli stanno in basso, a filo con il bordo inferiore della card */
+.lati {
+  position: relative;
+  z-index: 1;
+  align-self: flex-end;
+}
+
+/* Modulo più lungo: la parte a sinistra (--ins) resta dentro la card, anche quando scivola fuori */
+.lati .slot .blocco {
+  --ins: 84px;
+  width: calc(100% + var(--ins));
+  margin-left: calc(-1 * var(--ins));
+  padding-left: calc(var(--ins) + 16px);
+  background-size:
+    100% 14%,
+    100% 2px,
+    calc(100% - var(--ins) - 28px) 1px,
+    calc(100% - var(--ins) - 28px) 36%,
+    auto;
+  background-position:
+    0 100%,
+    0 83%,
+    calc(var(--ins) + 14px) 44%,
+    calc(var(--ins) + 14px) 68.75%,
+    0 0;
+  /* trapezio rettangolo e tacca calcolati sulla parte visibile del modulo */
+  clip-path: polygon(
+    0 0,
+    calc(var(--ins) + (100% - var(--ins)) * 0.76) 0,
+    100% 100%,
+    calc(var(--ins) + (100% - var(--ins)) * 0.6 + 8px) 100%,
+    calc(var(--ins) + (100% - var(--ins)) * 0.6 + 8px) calc(100% - 9px),
+    calc(var(--ins) + (100% - var(--ins)) * 0.6) calc(100% - 9px),
+    calc(var(--ins) + (100% - var(--ins)) * 0.6) 100%,
+    0 100%);
+}
+
+.lati .slot:hover .blocco { transform: translateX(56px); }
+
+/* Telefono: nessuna parte nascosta, i moduli stanno in fila sotto la card */
+@media (max-width: 700px) {
+  .lati { align-self: stretch; }
+  .lati .slot .blocco:nth-child(n) { --ins: 0px; margin-left: 0; }
+  .corpo { padding: 56px 5% 44px; }
+}
+
+/* =====================================================================
+   CARD A "L" (dal disegno): corpo grande + fascia in alto a destra,
+   con i moduli nello spazio vuoto sotto la fascia
+   ===================================================================== */
+.unita {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+}
+
+@media (min-width: 701px) {
+  .macchina { justify-content: center; }
+
+  /* Forma da mecha: spalla alta, trave visiera ribassata, fianco e piedi a gradini; il lato inclinato resta dov'è per i moduli */
+  .corpo {
+    flex: none;
+    width: 100%;
+    aspect-ratio: 523 / 280;
+    min-height: 0;
+    padding: 12% 46% 6% 5%;          /* il contenuto resta nella parte larga a sinistra */
+    clip-path: polygon(0 20.7%, 11.1% 0, 61.6% 0, 64.3% 5%, 96.6% 5%, 100% 11.4%, 100% 21.4%, 61.2% 21.4%, 55.5% 100%, 13.4% 100%, 10.7% 95%, 4.6% 95%, 1.9% 90%, 1.9% 37.1%, 0 33.6%);
+  }
+
+  /* Il riquadro incassato nella fascia (come nel disegno) contiene l'invito a scegliere */
+  .suggerimento {
+    top: 9%;
+    left: 64.6%;
+    bottom: auto;
+    width: 30.6%;
+    height: 12.4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.65em;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(225, 29, 46, 0.6);
+    border-bottom: none;
+  }
+
+  /* Introduzione più compatta, per stare nella parte larga */
+  .corpo #foto { width: 110px; height: 110px; }
+  .corpo #presentazione { padding: 14px 16px; gap: 16px; }
+  .corpo #presentazione > div { flex: 1 1 180px; }
+  .corpo h1 { font-size: 1.5em; }
+  .corpo h2 { font-size: 1.05em; }
+  .corpo #testo { font-size: 0.82em; }
+  .corpo #messaggio-errore { top: 12%; left: 5%; right: 46%; }
+
+  /* Moduli: nello spazio vuoto a destra del corpo, sotto la fascia, a filo con il fondo della card */
+  .lati {
+    position: absolute;
+    align-self: stretch;             /* annulla "flex-end", che lo schiacciava in basso */
+    top: 24.5%;
+    bottom: 0;
+    left: 58%;
+    right: 0;
+    width: auto;
+    margin: 0;
+    gap: 8px;
+  }
+
+  .slot {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .slot:nth-child(1) { width: 86%; }
+  .slot:nth-child(2) { width: 78%; }
+  .slot:nth-child(3) { width: 70%; }
+  .slot:nth-child(4) { width: 62%; }
+
+  .lati .slot .blocco { height: 100%; }
+}
+
+/* =====================================================================
+   RITOCCHI MODULI: etichetta non tagliata, chip sotto il testo, collegamento sempre intatto
+   ===================================================================== */
+.lati .slot .blocco {
+  --ins: 130px;                                   /* parte nascosta più lunga: resta dentro la card anche scorrendo */
+  padding-top: 6px;
+  background-size:
+    100% 13%,
+    100% 2px,
+    calc(100% - var(--ins) - 28px) 1px,
+    calc(100% - var(--ins) - 28px) 34%,
+    auto;
+  background-position:
+    0 100%,
+    0 85.5%,
+    calc(var(--ins) + 14px) 50%,
+    calc(var(--ins) + 14px) 75.76%,
+    0 0;
+}
+
+@media (min-width: 701px) {
+  /* il testo parte dopo il bordo inclinato della card */
+  .lati { left: 62%; }
+  .lati .slot .blocco { font-size: 1.05em; }
+
+  .slot:nth-child(1) { width: 82%; }
+  .slot:nth-child(2) { width: 74%; }
+  .slot:nth-child(3) { width: 66%; }
+  .slot:nth-child(4) { width: 58%; }
+}
+
+@media (min-width: 701px) {
+  .lati { bottom: 1px; }          /* evita che i contatti sbordino sotto il bordo della card */
+}
+
+@media (max-width: 700px) {
+  .lati .slot .blocco:nth-child(n) {
+    font-size: 0.72em;
+    letter-spacing: 0.02em;
+    padding-left: 6px;
+    padding-right: 4px;
+  }
+}
+
+@media (max-width: 700px) {
+  /* inclinazione più leggera, così "Passioni" non viene tagliato */
+  .lati .slot .blocco:nth-child(n) { clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%); }
+}
+
+/* =====================================================================
+   MODULI = DISCHI: mezzo disco che spunta dalla fessura della card.
+   Passandoci sopra il disco scivola fuori girando, poi rientra.
+   ===================================================================== */
+
+/* le misure dei dischi seguono la larghezza della card (cqw = 1% della sua larghezza) */
+.unita { container-type: inline-size; }
+
+/* Il modulo non è più una barretta: resta solo l'area cliccabile con il nome */
+.lati .slot .blocco {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  /* il nome parte dopo il disco, anche quando è completamente fuori */
+  padding: 0 4px 0 calc(var(--e, 0cqw) + 8.65cqw + 10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: none;
+  border: none;
+  box-shadow: none;
+  clip-path: none;
+  transform: none;
+  filter: none;
+  color: var(--argento-chiaro);
+  text-shadow: 0 0 8px #000;
+}
+
+.lati .slot:nth-child(n) .blocco { color: var(--argento-chiaro); }
+.lati .slot:hover .blocco { transform: none; filter: none; color: #fff; }
+.lati .slot .blocco.attivo { box-shadow: none; transform: none; color: var(--rosso-chiaro); }
+.lati .slot .blocco::after { display: none; }              /* niente LED */
+
+/* --- Il disco --- */
+.lati .slot .blocco::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(var(--e, 0cqw) - 5.4cqw);                      /* a riposo spunta solo mezzo disco */
+  width: 9.4cqw;
+  height: 9.4cqw;
+  margin-top: -4.7cqw;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),      /* solchi */
+    radial-gradient(circle, transparent 0 14%, #c4c4c9 14% 22%, transparent 22%),                 /* anello centrale */
+    radial-gradient(circle, transparent 0 30%, rgba(225, 29, 46, 0.8) 30% 35%, transparent 35%),   /* anello rosso */
+    conic-gradient(from 25deg, #101013, #3d3d47 8%, #101013 16%, #101013 33%, #b3121f 41%, #101013 49%,
+                   #101013 66%, #3d3d47 74%, #101013 82%, #101013);                               /* riflessi */
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);      /* bordo argentato */
+  -webkit-mask: radial-gradient(circle, transparent 0 10%, #000 10.5%);                          /* foro centrale */
+  mask: radial-gradient(circle, transparent 0 10%, #000 10.5%);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.9));
+  translate: 0 0;
+  rotate: 0deg;
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1), rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+}
+
+/* Hover (e modulo aperto): il disco esce dalla fessura, girando, e resta agganciato alla card */
+.lati .slot:hover .blocco::before,
+.lati .slot .blocco.attivo::before {
+  translate: 4.65cqw 0;
+  rotate: 270deg;
+}
+
+.lati .slot .blocco.attivo::before {
+  filter: drop-shadow(0 0 10px rgba(255, 77, 90, 0.95));
+}
+
+@media (min-width: 701px) {
+  /* posizione della fessura (bordo inclinato della card) per ogni riga */
+  .slot:nth-child(1) { --e: -1.66cqw; width: 70%; }
+  .slot:nth-child(2) { --e: -3.06cqw; width: 70%; }
+  .slot:nth-child(3) { --e: -4.47cqw; width: 70%; }
+  .slot:nth-child(4) { --e: -5.87cqw; width: 70%; }
+  .lati .slot .blocco { height: 100%; }
+}
+
+/* Telefono: quattro dischi interi in fila, nome sotto, girano al passaggio */
+@media (max-width: 700px) {
+  .lati .slot .blocco:nth-child(n) {
+    height: 96px;
+    padding: 8px 4px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: 0.8em;
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  .lati .slot .blocco::before {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 0;
+    flex: none;
+    width: 52px;
+    height: 52px;
+  }
+
+  .lati .slot:hover .blocco::before,
+  .lati .slot .blocco.attivo::before { translate: 0 0; rotate: 270deg; }
+}
+
+/* =====================================================================
+   CARD PRINCIPALE = MECHA: armatura a pannelli, spalla, visiera, prese d'aria, bulloni
+   (il disegno è nel file corpo-mecha.svg)
+   ===================================================================== */
+
+/* Schermo sul petto: cornice scura con bulloni agli angoli */
+.corpo #presentazione {
+  background: var(--rivetti), rgba(6, 6, 8, 0.86);
+  box-shadow: inset 0 0 0 2px #3a3a42, inset 0 0 0 4px #050507;
+}
+
+@media (min-width: 701px) {
+  .corpo {
+    background: url("img/corpo-mecha.png") 0 0 / 100% 100% no-repeat, #1c1c21;
+    box-shadow: inset 0 0 0 2px #050507;
+  }
+
+  /* la sigla ora è stampata sull'armatura */
+  .corpo::after { content: none; }
+
+  /* il riquadro nella visiera: vetro scuro, bordo grigio (niente rosso) */
+  .suggerimento {
+    background: rgba(0, 0, 0, 0.78);
+    border-color: #5a5a64;
+    color: #c8c8d0;
+  }
+}
+
+/* =====================================================================
+   MODULI = SSD da 2,5": cassa metallica con etichetta e viti.
+   Passandoci sopra l'unità esce dalla baia della card, poi rientra.
+   ===================================================================== */
+
+.lati .slot .blocco {
+  --ins: 15cqw;                       /* parte dell'unità che resta infilata nella card */
+  --sl: 6.5cqw;                       /* di quanto esce al passaggio del mouse */
+  --lx: calc(var(--ins) + var(--e, 0cqw) + 2.5cqw);   /* inizio etichetta (dopo il bordo della card) */
+
+  width: calc(100% + var(--ins) - var(--sl));
+  margin-left: calc(-1 * var(--ins));
+  padding: 0 4px 0 calc(var(--lx) + 12px);
+  justify-content: center;
+  align-items: flex-start;
+  border: none;
+  border-radius: 0;
+  color: var(--argento-chiaro);
+  text-shadow: none;
+
+  /* dall'alto: viti, bordo rosso etichetta, etichetta, righe di spazzolatura, metallo */
+  background-image:
+    radial-gradient(circle at calc(100% - 11px) 11px, #a0a0aa 0 1.5px, #15151a 2.5px 4px, transparent 5px),
+    radial-gradient(circle at calc(100% - 11px) calc(100% - 11px), #a0a0aa 0 1.5px, #15151a 2.5px 4px, transparent 5px),
+    linear-gradient(#e11d2e, #e11d2e),
+    linear-gradient(135deg, #1a1a1f, #0a0a0d),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #62626c 0%, #34343c 9%, #44444d 50%, #23232a 100%);
+  background-size:
+    100% 100%,
+    100% 100%,
+    3px 58%,
+    13.5cqw 58%,
+    auto,
+    auto;
+  background-position:
+    0 0,
+    0 0,
+    var(--lx) 50%,
+    var(--lx) 50%,
+    0 0,
+    0 0;
+  background-repeat: no-repeat;
+
+  /* spigolo in alto a destra smussato */
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -2px 0 rgba(0, 0, 0, 0.65), inset 0 0 0 1px #08080a;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.2s ease;
+}
+
+/* niente disco né LED: nome e capacità sono sull'etichetta */
+.lati .slot .blocco::before { content: none; }
+
+.lati .slot .blocco::after { display: none; }
+
+/* Passando sopra: l'unità esce dalla baia (resta infilata nella card) */
+.lati .slot:hover .blocco {
+  transform: translateX(var(--sl));
+  filter: brightness(1.12);
+  color: #fff;
+}
+
+/* Modulo aperto: unità estratta, cassa con bordo rosso */
+.lati .slot .blocco.attivo {
+  transform: translateX(var(--sl));
+  color: var(--rosso-chiaro);
+  box-shadow: inset 0 0 0 2px #ff4d5a, inset 0 0 22px rgba(255, 77, 90, 0.4);
+}
+
+@media (min-width: 701px) {
+  /* lunghezza visibile costante oltre il bordo inclinato della card (+ spazio per l'uscita, così l'hover non sfarfalla) */
+  .lati .slot:nth-child(n) { width: calc(18.5cqw + var(--e) + 6.5cqw); }
+}
+
+/* Telefono: quattro SSD affiancati, nome al centro */
+@media (max-width: 700px) {
+  .lati .slot .blocco:nth-child(n) {
+    --ins: 0px;
+    --sl: 0px;
+    --lx: 8px;
+    width: 100%;
+    margin-left: 0;
+    height: 80px;
+    padding: 0 6px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: 100% 100%, 100% 100%, 3px 58%, calc(100% - 16px) 58%, auto, auto;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  }
+
+  .lati .slot .blocco::after { display: none; }
+  .lati .slot:hover .blocco,
+  .lati .slot .blocco.attivo { transform: none; }
+}
+
+/* =====================================================================
+   NUOVA FORMA: BUSTO DI MECHA (cresta a V, testa, spalle a gradini, petto, vita).
+   Nello spazio vuoto a destra, sotto la spalla, i moduli entrano nel fianco del busto.
+   Disegno nel file img/corpo-mecha.png (sorgente: corpo-mecha.svg, 600 x 380).
+   ===================================================================== */
+@media (min-width: 701px) {
+  /* la card si adatta anche all'altezza della finestra */
+  .unita { max-width: min(860px, max(560px, calc((100vh - 260px) * 1.5789))); }
+
+  .corpo {
+    aspect-ratio: 600 / 380;
+    padding: 15% 36.7% 5% 13.3%;      /* il contenuto sta nello schermo sul petto */
+    clip-path: polygon(
+      0 20%, 6% 11.58%, 25% 11.58%, 29% 17.89%, 31.67% 17.89%, 31.67% 10%,
+      27.67% 0, 33.67% 3.68%, 39.33% 8.95%, 45% 3.68%, 51% 0, 47% 10%,
+      47% 17.89%, 49.67% 17.89%, 53.67% 11.58%, 93.33% 11.58%, 100% 21.05%,
+      100% 35.26%, 97.33% 39.47%, 67% 39.47%, 64% 100%, 55% 100%, 52.33% 95.79%,
+      25% 95.79%, 22.33% 100%, 14.33% 100%, 11.67% 94.74%, 11.67% 44.21%,
+      3.33% 44.21%, 0 38.95%);
+  }
+
+  /* l'invito a scegliere sta nel riquadro sulla spalla destra */
+  .suggerimento {
+    top: 14.7%;
+    left: 56.7%;
+    width: 36.7%;
+    height: 10.5%;
+    border-bottom: 1px solid #5a5a64;
+  }
+
+  .corpo #messaggio-errore { top: 15%; left: 13.3%; right: 36.7%; }
+
+  /* moduli: nello spazio vuoto a destra, sotto la spalla destra, a filo con il fondo */
+  .lati { top: 42.5%; left: 66.6%; }
+
+  /* posizione del fianco inclinato del busto per ogni riga */
+  .slot:nth-child(1) { --e: -0.08cqw; }
+  .slot:nth-child(2) { --e: -0.82cqw; }
+  .slot:nth-child(3) { --e: -1.53cqw; }
+  .slot:nth-child(4) { --e: -2.27cqw; }
+}
+
+/* =====================================================================
+   CARD RETTANGOLARE CORAZZATA con QUATTRO FESSURE sul bordo destro:
+   le unità SSD escono da lì. Disegno: img/corpo-mecha.png (sorgente corpo-mecha.svg, 700 x 380;
+   la card occupa i primi 532, il resto è lo spazio dove sporgono i moduli).
+   ===================================================================== */
+@media (min-width: 701px) {
+  .unita { max-width: min(900px, max(580px, calc((100vh - 260px) * 1.842))); }
+
+  .corpo {
+    aspect-ratio: 700 / 380;
+    padding: 8% 34.3% 7.7% 5.2%;      /* il contenuto sta nello schermo al centro della card */
+    /* rettangolo con angoli smussati e quattro fessure ricavate nel bordo destro */
+    clip-path: polygon(
+      2% 0, 74% 0, 76% 3.68%, 76% 9.21%, 71.71% 9.21%, 71.71% 26.05%, 76% 26.05%,
+      76% 30.79%, 71.71% 30.79%, 71.71% 47.63%, 76% 47.63%, 76% 52.37%, 71.71% 52.37%,
+      71.71% 69.21%, 76% 69.21%, 76% 73.95%, 71.71% 73.95%, 71.71% 90.79%, 76% 90.79%,
+      76% 96.32%, 74% 100%, 2% 100%, 0 96.32%, 0 3.68%);
+  }
+
+  /* l'invito a scegliere sta nel riquadro della fascia alta */
+  .suggerimento {
+    top: 3.68%;
+    left: 46.86%;
+    width: 24.3%;
+    height: 6.3%;
+    border: 1px solid #5a5a64;
+  }
+
+  .corpo #messaggio-errore { top: 10%; left: 5.2%; right: 34.3%; }
+
+  /* quattro slot, uno per fessura: escono dal bordo destro della card */
+  .lati { top: 10.26%; bottom: 10.26%; left: 76%; right: 0; gap: 3.714cqw; }
+
+  .slot:nth-child(n) { --e: 0cqw; }
+
+  .lati .slot:nth-child(n) { width: calc(15.5cqw + 6cqw); }
+
+  .lati .slot .blocco {
+    --sl: 6cqw;
+    background-size: 100% 100%, 100% 100%, 3px 58%, 11.5cqw 58%, auto, auto;
+  }
 }
