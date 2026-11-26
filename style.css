@@ -703,9 +703,9 @@ h2 {
    STILE "PIASTRE DIAGONALI": acciaio scuro, tagli a 45°, strisce rosse
    ===================================================================== */
 
-/* Sfondo: piastre diagonali (file sfondo-mecha.svg) */
+/* Sfondo: parete di hangar a pannelli corazzati (img/sfondo-mecha.svg) */
 body {
-  background: #050507 url("sfondo-mecha.svg") center / cover fixed no-repeat;
+  background: #050507 url("img/sfondo-mecha.svg") center / cover fixed no-repeat;
 }
 
 /* --- Corpo: piastre diagonali, striscia rossa luminosa, contorno sottile --- */
@@ -1449,5 +1449,170 @@ body { overflow-x: clip; }
   .lati .slot .blocco {
     --sl: 6cqw;
     background-size: 100% 100%, 100% 100%, 3px 58%, 11.5cqw 58%, auto, auto;
+  }
+}
+
+/* =====================================================================
+   APERTURA DI UN MODULO (schermi larghi): la card scivola a sinistra
+   e l'ologramma si proietta a destra, accanto alla card.
+   Sotto i 1000px resta l'ologramma centrato a tutto schermo.
+   ===================================================================== */
+@keyframes proietta-lato {
+  from { opacity: 0; transform: scale(0.04, 0.7); filter: brightness(3); }
+  60%  { opacity: 1; transform: scale(1, 0.97); }
+  to   { transform: none; filter: none; }
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --cw: min(calc(100vw - 32px), 900px, max(580px, calc((100vh - 260px) * 1.842)));   /* larghezza della card */
+    --s: 0.5;                                                                          /* scala della card quando è aperto un modulo */
+  }
+
+  .unita {
+    width: var(--cw);
+    max-width: none;
+    transform-origin: left center;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* card (con i suoi moduli) rimpicciolita e spostata a sinistra */
+  body.proiezione .unita {
+    transform: translateX(calc(24px - 50vw + var(--cw) / 2)) scale(var(--s));
+  }
+
+  /* l'ologramma occupa lo spazio a destra della card, senza sfondo scuro: la card resta cliccabile */
+  .ologramma {
+    inset: 0 24px 0 calc(52px + var(--s) * var(--cw));
+    padding: 24px 0;
+    justify-content: flex-start;
+    background: none;
+    pointer-events: none;
+    animation: none;
+  }
+
+  .proiettore { width: 100%; pointer-events: auto; }
+
+  .pannello {
+    transform-origin: 0 50%;
+    animation: proietta-lato 0.5s ease-out, sfarfalla 5s linear 0.5s infinite;
+    container-type: inline-size;
+  }
+
+  /* alone di luce sul lato verso la card, da cui esce la proiezione */
+  .proiettore::after {
+    left: -14px;
+    right: auto;
+    top: 8%;
+    bottom: 8%;
+    width: 14px;
+    height: auto;
+    background: radial-gradient(ellipse at right center, rgba(255, 77, 90, 0.85), transparent 70%);
+  }
+}
+
+@media (min-width: 1280px) { :root { --s: 0.6; } }
+@media (min-width: 1600px) { :root { --s: 0.72; } }
+
+/* se il pannello è stretto, Passioni e "Cosa so fare" vanno una sotto l'altra */
+@container (max-width: 620px) {
+  #colonne { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* =====================================================================
+   BARRA DI SCORRIMENTO OLOGRAFICA: guida con tacche rosse e cursore luminoso
+   ===================================================================== */
+.pannello::-webkit-scrollbar {
+  width: 14px;
+}
+
+.pannello::-webkit-scrollbar-track {
+  margin: 8px 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 77, 90, 0.5) 0 1px, transparent 1px 10px) center / 6px 100% no-repeat,   /* tacche */
+    linear-gradient(90deg, transparent 6px, rgba(255, 77, 90, 0.35) 6px 7px, transparent 7px),                           /* linea centrale */
+    rgba(20, 0, 3, 0.55);
+  border-left: 1px solid rgba(255, 77, 90, 0.35);
+}
+
+.pannello::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #7a0c14, #ff4d5a 50%, #7a0c14);
+  border: 1px solid #ffb3b9;
+  border-radius: 0;
+  box-shadow: 0 0 8px rgba(255, 77, 90, 0.9), inset 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+.pannello::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #a3121f, #ff8a93 50%, #a3121f);
+  box-shadow: 0 0 14px rgba(255, 120, 130, 1), inset 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+.pannello::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Firefox: versione semplificata (le proprietà standard disattiverebbero lo stile sopra in Chrome) */
+@supports not selector(::-webkit-scrollbar) {
+  .pannello {
+    scrollbar-width: thin;
+    scrollbar-color: #ff4d5a rgba(20, 0, 3, 0.7);
+  }
+}
+
+/* =====================================================================
+   SFONDO IN TEMA: foto personale in bianco e nero e righe di scansione olografiche
+   ===================================================================== */
+body::before {
+  filter: grayscale(1) contrast(1.1);        /* la foto di sfondo non spezza la palette rosso/nero */
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+}
+
+/* Footer in tema: pannello d'acciaio con bulloni e bordo a strisce di pericolo (come la parete) */
+footer {
+  background:
+    var(--rivetti),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #1b1b21, #0b0b0f);
+  border-top: 8px solid;
+  border-image: repeating-linear-gradient(-45deg, #8e0f19 0 12px, #08080a 12px 24px) 8;
+}
+
+/* =====================================================================
+   MODULI PIÙ IN PROFONDITÀ NELLA CARD: tasche profonde nel lato destro.
+   Le unità SSD stanno dentro il profilo della card e sporgono solo un po';
+   passandoci sopra escono ancora di più. Disegno: img/corpo-mecha.png (card larga 640 su 700).
+   ===================================================================== */
+@media (min-width: 701px) {
+  .corpo {
+    padding: 8% 38.9% 7.7% 5.2%;      /* il contenuto sta nello schermo, a sinistra delle baie */
+    /* rettangolo con angoli smussati e quattro tasche profonde (170 su 700) nel bordo destro */
+    clip-path: polygon(
+      2% 0, 89.43% 0, 91.43% 3.68%,
+      91.43% 9.21%, 67.14% 9.21%, 67.14% 26.05%, 91.43% 26.05%,
+      91.43% 30.79%, 67.14% 30.79%, 67.14% 47.63%, 91.43% 47.63%,
+      91.43% 52.37%, 67.14% 52.37%, 67.14% 69.21%, 91.43% 69.21%,
+      91.43% 73.95%, 67.14% 73.95%, 67.14% 90.79%, 91.43% 90.79%,
+      91.43% 96.32%, 89.43% 100%, 2% 100%, 0 96.32%, 0 3.68%);
+  }
+
+  .suggerimento { left: 58.57%; width: 27.14%; }
+  .corpo #messaggio-errore { right: 38.9%; }
+
+  /* i moduli partono dalla parete interna delle tasche */
+  .lati { left: 67.14%; }
+
+  .lati .slot:nth-child(n) { width: 100%; }
+
+  .lati .slot .blocco {
+    --ins: 10cqw;                       /* parte infilata dietro la card */
+    background-size: 100% 100%, 100% 100%, 3px 58%, 16cqw 58%, auto, auto;
   }
 }

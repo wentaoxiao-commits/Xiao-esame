@@ -339,6 +339,12 @@ const ologramma = document.getElementById("ologramma");
 async function apriOlogramma(nome) {
   const scheda = SCHEDE[nome];
 
+  // Secondo click sullo stesso modulo: chiude
+  if (!ologramma.hidden && ologramma.dataset.modulo === nome) {
+    chiudiOlogramma();
+    return;
+  }
+
   // Mostro solo la vista scelta e evidenzio il blocco
   document.querySelectorAll(".vista").forEach(v => { v.hidden = v.dataset.vista !== nome; });
   document.querySelectorAll(".blocco").forEach(b => b.classList.toggle("attivo", b.dataset.apri === nome));
